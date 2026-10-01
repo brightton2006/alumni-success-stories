@@ -1,0 +1,82 @@
+[
+  {
+    "id": "id_1788120956794_po9by93hy",
+    "createdAt": "2026-08-30T20:15:56.794Z",
+    "updatedAt": "2026-08-30T20:15:56.795Z",
+    "name": "Education",
+    "description": "Transformational stories in academia and learning",
+    "isActive": true
+  },
+  {
+    "id": "id_1788120956797_u0jpbnfc2",
+    "createdAt": "2026-08-30T20:15:56.797Z",
+    "updatedAt": "2026-08-30T20:15:56.797Z",
+    "name": "Entrepreneurship",
+    "description": "Ventures, startups, and business breakthroughs",
+    "isActive": true
+  },
+  {
+    "id": "id_1788120956798_t45v9j3cw",
+    "createdAt": "2026-08-30T20:15:56.798Z",
+    "updatedAt": "2026-08-30T20:15:56.798Z",
+    "name": "Technology",
+    "description": "Innovations in AI, software, and digital engineering",
+    "isActive": true
+  },
+  {
+    "id": "id_1788120956799_dq6muylop",
+    "createdAt": "2026-08-30T20:15:56.799Z",
+    "updatedAt": "2026-08-30T20:15:56.799Z",
+    "name": "Innovation",
+    "description": "Pioneering solutions and creative discoveries",
+    "isActive": true
+  },
+  {
+    "id": "id_1788120956800_1v00gplbm",
+    "createdAt": "2026-08-30T20:15:56.800Z",
+    "updatedAt": "2026-08-30T20:15:56.800Z",
+    "name": "Sports",
+    "description": "Athletic perseverance, championships, and athletic triumph",
+    "isActive": true
+  },
+  {
+    "id": "id_1788120956801_5weoxqk6z",
+    "createdAt": "2026-08-30T20:15:56.801Z",
+    "updatedAt": "2026-08-30T20:15:56.801Z",
+    "name": "Agriculture",
+    "description": "Sustainable farming, agritech, and rural development",
+    "isActive": true
+  },
+  {
+    "id": "id_1788120956802_gedvg1st8",
+    "createdAt": "2026-08-30T20:15:56.802Z",
+    "updatedAt": "2026-08-30T20:15:56.802Z",
+    "name": "Social Impact",
+    "description": "Community uplifting, philanthropy, and advocacy",
+    "isActive": true
+  },
+  {
+    "id": "id_1788120956803_qnn6pq8a1",
+    "createdAt": "2026-08-30T20:15:56.803Z",
+    "updatedAt": "2026-08-30T20:15:56.803Z",
+    "name": "Career",
+    "description": "Professional growth, leadership, and domain mastery",
+    "isActive": true
+  },
+  {
+    "id": "id_1788120956804_61drj5gmm",
+    "createdAt": "2026-08-30T20:15:56.804Z",
+    "updatedAt": "2026-08-30T20:15:56.804Z",
+    "name": "Community",
+    "description": "Grassroots leadership and social empowerment",
+    "isActive": true
+  },
+  {
+    "id": "id_1788120956806_lnoiw5092",
+    "createdAt": "2026-08-30T20:15:56.806Z",
+    "updatedAt": "2026-08-30T20:15:56.806Z",
+    "name": "Other",
+    "description": "Diverse inspirational success stories",
+    "isActive": true
+  }
+]

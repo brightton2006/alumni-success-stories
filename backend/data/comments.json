@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "id_1789834864293_eztafovk6",
+    "id": "id_1789834864293_eztafovk6",
+    "createdAt": "2026-09-19T16:21:04.292Z",
+    "updatedAt": "2026-09-19T16:21:04.293Z",
+    "storyId": "id_1788326132357_paqn4t4cj",
+    "authorName": "Brightton",
+    "batchNumber": "26",
+    "authorTag": "@Brightton-26",
+    "commentText": "Inspirational journey of alumni network support!",
+    "likes": 0
+  },
+  {
+    "_id": "id_1790678698997_3nrca6o11",
+    "id": "id_1790678698997_3nrca6o11",
+    "createdAt": "2026-09-29T10:44:58.995Z",
+    "updatedAt": "2026-09-29T10:44:58.997Z",
+    "storyId": "id_1788276343001_67hhjc0q2",
+    "authorName": "M. Brightton",
+    "batchNumber": "28",
+    "authorTag": "@M. Brightton-28",
+    "commentText": "good i real i like it so much",
+    "likes": 0
+  }
+]

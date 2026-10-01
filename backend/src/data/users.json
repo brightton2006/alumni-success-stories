@@ -1,0 +1,26 @@
+[
+  {
+    "id": "id_1788326101333_9lxvo22z6",
+    "createdAt": "2026-09-02T05:15:01.333Z",
+    "updatedAt": "2026-09-02T05:15:01.333Z",
+    "fullName": "Success Story Admin",
+    "email": "admin@successstory.com",
+    "mobile": "+1 (555) 019-2831",
+    "passwordHash": "$2b$10$prJs8KQAkoX2RAl1Q52.iuQKQB2OdD6tMHsvHHZCce5brdlIy6LJu",
+    "role": "ADMIN",
+    "profileImage": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+    "isActive": true
+  },
+  {
+    "id": "id_1788326101403_y01emamgx",
+    "createdAt": "2026-09-02T05:15:01.403Z",
+    "updatedAt": "2026-09-02T05:15:01.403Z",
+    "fullName": "Alex Morgan",
+    "email": "user@successstory.com",
+    "mobile": "+1 (555) 234-5678",
+    "passwordHash": "$2b$10$zt7M088/kRfmMKKO55oAquc1YdJTlFOKM537tO5ho8Kgtt/fRjHyy",
+    "role": "USER",
+    "profileImage": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
+    "isActive": true
+  }
+]

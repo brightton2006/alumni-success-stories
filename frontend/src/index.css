@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #7C3AED;
+  --color-primary-hover: #5B21B6;
+  --color-primary-light: #EDE9FE;
+  --color-primary-soft: #F3E8FF;
+
+  --color-background: #FFFFFF;
+  --color-background-secondary: #F8FAFC;
+
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #475569;
+  --color-border: #E2E8F0;
+
+  --color-success: #16A34A;
+  --color-warning: #F59E0B;
+  --color-danger: #DC2626;
+
+  /* Backward compatibility mappings to Purple brand tokens */
+  --color-portal-bg: #F8FAFC;
+  --color-portal-card: #FFFFFF;
+  --color-portal-navy: #7C3AED;
+  --color-portal-navy-dark: #5B21B6;
+  --color-portal-navy-hover: #5B21B6;
+  --color-portal-blue-academic: #6D28D9;
+  --color-portal-blue: #7C3AED;
+  --color-portal-blue-soft: #EDE9FE;
+  --color-portal-border: #E2E8F0;
+  --color-portal-grey-light: #F1F5F9;
+  --color-portal-text-primary: #0F172A;
+  --color-portal-text-secondary: #475569;
+  --color-portal-text-muted: #64748B;
+  --color-portal-success: #16A34A;
+  --color-portal-success-light: #DCFCE7;
+  --color-portal-danger: #DC2626;
+
+  --color-brand-navy: #7C3AED;
+  --color-brand-navy-hover: #5B21B6;
+  --color-brand-blue: #6D28D9;
+  --color-brand-blue-secondary: #8B5CF6;
+  --color-brand-blue-soft: #EDE9FE;
+  --color-brand-text: #0F172A;
+  --color-brand-muted: #475569;
+  --color-brand-border: #E2E8F0;
+  --color-brand-bg: #F8FAFC;
+  --color-brand-card: #FFFFFF;
+  --color-brand-success: #16A34A;
+
+  --color-nec-navy: #7C3AED;
+  --color-nec-navy-hover: #5B21B6;
+  --color-nec-blue: #6D28D9;
+  --color-nec-royal: #8B5CF6;
+  --color-nec-green: #16A34A;
+  --color-nec-card: #FFFFFF;
+  --color-nec-border: #E2E8F0;
+  --color-nec-text: #0F172A;
+  --color-nec-muted: #475569;
+  --color-nec-bg: #F8FAFC;
+
+  --color-dashboard-bg: #F8FAFC;
+  --color-dashboard-card: #FFFFFF;
+  --color-dashboard-primary: #7C3AED;
+  --color-dashboard-secondary: #6D28D9;
+  --color-dashboard-accent: #8B5CF6;
+  --color-dashboard-border: #E2E8F0;
+}
+
+:root {
+  --primary: #7C3AED;
+  --primary-hover: #5B21B6;
+  --primary-light: #EDE9FE;
+  --primary-soft: #F3E8FF;
+
+  --background: #FFFFFF;
+  --background-secondary: #F8FAFC;
+
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --border: #E2E8F0;
+
+  --success: #16A34A;
+  --warning: #F59E0B;
+  --danger: #DC2626;
+
+  --portal-bg: #F8FAFC;
+  --portal-card: #FFFFFF;
+  --portal-navy: #7C3AED;
+  --portal-navy-hover: #5B21B6;
+  --portal-navy-light: #EDE9FE;
+  --portal-blue: #6D28D9;
+  --portal-blue-medium: #8B5CF6;
+  --portal-blue-light: #EDE9FE;
+  --portal-border: #E2E8F0;
+  --portal-grey-light: #F1F5F9;
+  --portal-text: #0F172A;
+  --portal-muted: #475569;
+  --portal-subtle: #64748B;
+  --portal-success: #16A34A;
+}
+
+@layer base {
+  body {
+    background-color: #F8FAFC;
+    color: #0F172A;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Institutional Soft UI Elements */
+.institutional-card {
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.institutional-card:hover {
+  border-color: rgba(124, 58, 237, 0.3);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+.institutional-table th {
+  background-color: #F8FAFC;
+  color: #7C3AED;
+  font-weight: 600;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.institutional-table td {
+  border-bottom: 1px solid #E2E8F0;
+  color: #0F172A;
+}
+
+.institutional-table tr:hover td {
+  background-color: rgba(243, 232, 255, 0.4);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7C3AED;
+}

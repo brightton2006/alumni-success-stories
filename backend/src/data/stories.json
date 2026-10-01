@@ -1,0 +1,1338 @@
+[
+  {
+    "id": "id_1788326101407_tbka144aq",
+    "createdAt": "2026-09-02T05:15:01.407Z",
+    "updatedAt": "2026-09-02T05:15:01.407Z",
+    "authorAdminId": "id_1788326101333_9lxvo22z6",
+    "storyTitle": "Pioneering Clean Solar Microgrids for Rural Communities",
+    "personName": "Elena Rostova",
+    "profession": "Clean Energy Innovator & Researcher",
+    "location": "Nairobi, Kenya",
+    "category": "Innovation",
+    "shortSummary": "How Elena built accessible off-grid solar energy systems that now power over 50,000 rural homes across East Africa.",
+    "fullStory": "Elena Rostova grew up in a rural village where electrical power outages lasted for days, severely disrupting evening study hours and healthcare clinic operations. From her early childhood in 2010, she harbored a deep dream to make clean, affordable energy accessible to every off-grid community in East Africa.\n\nAfter earning her doctorate in Renewable Energy Systems in 2018, Elena faced tremendous challenges: lack of early-stage venture funding, rugged terrain that hindered traditional infrastructure, and skepticism from legacy utility companies.\n\nThe pivotal turning point arrived in 2020 when Elena designed a decentralized solar microgrid powered by AI-optimized lithium battery management. Instead of relying on expensive centralized grids, her system allowed villagers to buy micro-shares of solar power via mobile payments.\n\nTaking decisive actions in 2021, Elena partnered with local youth, training over 200 young technicians to install and maintain the microgrids. Within three years, her startup successfully powered over 50,000 homes, 120 rural schools, and 45 community health clinics.\n\nHer key achievements include winning the Global CleanTech Innovation Award in 2023 and delivering uninterrupted light to over 250,000 citizens. Elena believes the key lesson is that sustainable technology succeeds only when built in true partnership with local communities. Looking toward her future vision, Elena aims to expand solar microgrid networks to cover 500,000 off-grid families by 2030.",
+    "personImage": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+    "additionalImages": [],
+    "status": "PUBLISHED",
+    "showName": true,
+    "publicationLocations": [
+      "Homepage",
+      "Success Stories",
+      "Featured Stories"
+    ],
+    "views": 413,
+    "journeyMap": {
+      "title": "Pioneering Clean Solar Microgrids for Rural Communities",
+      "personName": "Elena Rostova",
+      "summary": "Elena Rostova grew up in a rural village where electrical power outages lasted for days, severely disrupting evening study hours and healthcare clinic operation...",
+      "category": "Success Story",
+      "heroImage": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+      "milestones": [
+        {
+          "stage": 1,
+          "title": "EARLY BACKGROUND",
+          "period": "2010",
+          "description": [
+            "Elena Rostova grew up in a rural village where electrical power outages lasted for days, severely disrupting evening study hours and healthcare cli...",
+            "From her early childhood in 2010, she harbored a deep dream to make clean, affordable energy accessible to every off-grid community in East Africa.",
+            "After earning her doctorate in Renewable Energy Systems in 2018, Elena faced tremendous challenges: lack of early-stage venture funding, rugged ter..."
+          ],
+          "icon": "🌱",
+          "importance": "normal",
+          "categoryKey": "beginning",
+          "accentColor": "#10b981"
+        },
+        {
+          "stage": 2,
+          "title": "IMPORTANT EVENTS",
+          "description": [
+            "Instead of relying on expensive centralized grids, her system allowed villagers to buy micro-shares of solar power via mobile payments."
+          ],
+          "icon": "📅",
+          "importance": "normal",
+          "categoryKey": "importantEvents",
+          "accentColor": "#0284c7"
+        },
+        {
+          "stage": 3,
+          "title": "TURNING POINT",
+          "period": "2020",
+          "description": [
+            "The pivotal turning point arrived in 2020 when Elena designed a decentralized solar microgrid powered by AI-optimized lithium battery management."
+          ],
+          "icon": "🔄",
+          "importance": "high",
+          "categoryKey": "turningPoint",
+          "accentColor": "#8b5cf6"
+        },
+        {
+          "stage": 4,
+          "title": "ACTIONS TAKEN",
+          "period": "2021",
+          "description": [
+            "Taking decisive actions in 2021, Elena partnered with local youth, training over 200 young technicians to install and maintain the microgrids."
+          ],
+          "icon": "🚀",
+          "importance": "normal",
+          "categoryKey": "actions",
+          "accentColor": "#06b6d4"
+        },
+        {
+          "stage": 5,
+          "title": "MAJOR ACHIEVEMENTS",
+          "period": "2023",
+          "description": [
+            "Her key achievements include winning the Global CleanTech Innovation Award in 2023 and delivering uninterrupted light to over 250,000 citizens.",
+            "Elena believes the key lesson is that sustainable technology succeeds only when built in true partnership with local communities."
+          ],
+          "icon": "🏆",
+          "importance": "high",
+          "categoryKey": "achievements",
+          "accentColor": "#eab308"
+        },
+        {
+          "stage": 6,
+          "title": "IMPACT CREATED",
+          "description": [
+            "Within three years, her startup successfully powered over 50,000 homes, 120 rural schools, and 45 community health clinics."
+          ],
+          "icon": "🌍",
+          "importance": "normal",
+          "categoryKey": "impact",
+          "accentColor": "#10b981"
+        },
+        {
+          "stage": 7,
+          "title": "FUTURE VISION",
+          "period": "2030",
+          "description": [
+            "Looking toward her future vision, Elena aims to expand solar microgrid networks to cover 500,000 off-grid families by 2030."
+          ],
+          "icon": "🔮",
+          "importance": "normal",
+          "categoryKey": "futureVision",
+          "accentColor": "#d946ef"
+        }
+      ],
+      "achievements": [
+        {
+          "value": "2010",
+          "label": "KEY YEAR"
+        },
+        {
+          "value": "2018",
+          "label": "KEY YEAR"
+        },
+        {
+          "value": "2020",
+          "label": "KEY YEAR"
+        },
+        {
+          "value": "2021",
+          "label": "KEY YEAR"
+        }
+      ],
+      "highlights": [
+        "Elena",
+        "Solar",
+        "Rural",
+        "Power",
+        "Early",
+        "Energy",
+        "Grid",
+        "Community",
+        "When",
+        "Microgrid"
+      ],
+      "impact": "Within three years, her startup successfully powered over 50,000 homes, 120 rural schools, and 45 community health clinics.",
+      "futureVision": "Looking toward her future vision, Elena aims to expand solar microgrid networks to cover 500,000 off-grid families by 2030."
+    },
+    "aiExtractedElements": {
+      "person": "Elena Rostova",
+      "profileImage": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+      "keywords": [
+        "Elena",
+        "Solar",
+        "Rural",
+        "Power",
+        "Early",
+        "Energy",
+        "Grid",
+        "Community",
+        "When",
+        "Microgrid",
+        "Powered",
+        "Local"
+      ],
+      "sections": {
+        "beginning": [
+          "Elena Rostova grew up in a rural village where electrical power outages lasted for days, severely disrupting evening study hours and healthcare clinic operations.",
+          "From her early childhood in 2010, she harbored a deep dream to make clean, affordable energy accessible to every off-grid community in East Africa.",
+          "After earning her doctorate in Renewable Energy Systems in 2018, Elena faced tremendous challenges: lack of early-stage venture funding, rugged terrain that hindered traditional infrastructure, and skepticism from legacy utility companies."
+        ],
+        "goal": [],
+        "challenges": [],
+        "importantEvents": [
+          "Instead of relying on expensive centralized grids, her system allowed villagers to buy micro-shares of solar power via mobile payments."
+        ],
+        "turningPoint": [
+          "The pivotal turning point arrived in 2020 when Elena designed a decentralized solar microgrid powered by AI-optimized lithium battery management."
+        ],
+        "actions": [
+          "Taking decisive actions in 2021, Elena partnered with local youth, training over 200 young technicians to install and maintain the microgrids."
+        ],
+        "achievements": [
+          "Her key achievements include winning the Global CleanTech Innovation Award in 2023 and delivering uninterrupted light to over 250,000 citizens.",
+          "Elena believes the key lesson is that sustainable technology succeeds only when built in true partnership with local communities."
+        ],
+        "impact": [
+          "Within three years, her startup successfully powered over 50,000 homes, 120 rural schools, and 45 community health clinics."
+        ],
+        "lessons": [],
+        "futureVision": [
+          "Looking toward her future vision, Elena aims to expand solar microgrid networks to cover 500,000 off-grid families by 2030."
+        ]
+      }
+    },
+    "aiKeywords": [
+      "Elena",
+      "Solar",
+      "Rural",
+      "Power",
+      "Early",
+      "Energy",
+      "Grid",
+      "Community",
+      "When",
+      "Microgrid",
+      "Powered",
+      "Local"
+    ],
+    "aiMindMap": {
+      "nodes": [
+        {
+          "id": "center-person",
+          "type": "centerPersonNode",
+          "position": {
+            "x": 510,
+            "y": 410
+          },
+          "data": {
+            "name": "Elena Rostova",
+            "title": "Pioneering Clean Solar Microgrids for Rural Communities",
+            "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+            "label": "Elena Rostova",
+            "level": "center"
+          }
+        },
+        {
+          "id": "node-1",
+          "type": "mainBranchNode",
+          "position": {
+            "x": 500,
+            "y": 90
+          },
+          "data": {
+            "label": "Elena Rostova grew up in a rural village w...",
+            "title": "Elena Rostova grew up in a rural village w...",
+            "summary": "Elena Rostova grew up in a rural village where electrical power outages lasted for days, severely disrupting evening study hours and healthcare clinic operations. From her early childhood in 2010, ...",
+            "details": "Elena Rostova grew up in a rural village where electrical power outages lasted for days, severely disrupting evening study hours and healthcare clinic operations. From her early childhood in 2010, she harbored a deep dream to make clean, affordable energy accessible to every off-grid community in East Africa.",
+            "date": "2010",
+            "sourceText": "Elena Rostova grew up in a rural village where electrical power outages lasted for days, severely disrupting evening study hours and healthcare clinic operations. From her early childhood in 2010, she harbored a deep dream to make clean, affordable energy accessible to every off-grid community in East Africa.",
+            "icon": "🌱",
+            "color": "#10b981",
+            "accentColor": "#10b981",
+            "categoryKey": "Beginning",
+            "level": "main",
+            "isExpanded": false
+          }
+        },
+        {
+          "id": "node-2",
+          "type": "mainBranchNode",
+          "position": {
+            "x": 833,
+            "y": 332
+          },
+          "data": {
+            "label": "After earning her doctorate in Renewable E...",
+            "title": "After earning her doctorate in Renewable E...",
+            "summary": "After earning her doctorate in Renewable Energy Systems in 2018, Elena faced tremendous challenges: lack of early-stage venture funding, rugged terrain that hindered traditional infrastructure, and...",
+            "details": "After earning her doctorate in Renewable Energy Systems in 2018, Elena faced tremendous challenges: lack of early-stage venture funding, rugged terrain that hindered traditional infrastructure, and skepticism from legacy utility companies.",
+            "date": "2018",
+            "sourceText": "After earning her doctorate in Renewable Energy Systems in 2018, Elena faced tremendous challenges: lack of early-stage venture funding, rugged terrain that hindered traditional infrastructure, and skepticism from legacy utility companies.",
+            "icon": "🌱",
+            "color": "#3b82f6",
+            "accentColor": "#3b82f6",
+            "categoryKey": "Beginning",
+            "level": "main",
+            "isExpanded": false
+          }
+        },
+        {
+          "id": "node-3",
+          "type": "mainBranchNode",
+          "position": {
+            "x": 706,
+            "y": 723
+          },
+          "data": {
+            "label": "The pivotal turning point arrived in 2020 ...",
+            "title": "The pivotal turning point arrived in 2020 ...",
+            "summary": "The pivotal turning point arrived in 2020 when Elena designed a decentralized solar microgrid powered by AI-optimized lithium battery management. Instead of relying on expensive centralized grids, ...",
+            "details": "The pivotal turning point arrived in 2020 when Elena designed a decentralized solar microgrid powered by AI-optimized lithium battery management. Instead of relying on expensive centralized grids, her system allowed villagers to buy micro-shares of solar power via mobile payments.",
+            "date": "2020",
+            "sourceText": "The pivotal turning point arrived in 2020 when Elena designed a decentralized solar microgrid powered by AI-optimized lithium battery management. Instead of relying on expensive centralized grids, her system allowed villagers to buy micro-shares of solar power via mobile payments.",
+            "icon": "🔄",
+            "color": "#f59e0b",
+            "accentColor": "#f59e0b",
+            "categoryKey": "Turning Point",
+            "level": "main",
+            "isExpanded": false
+          }
+        },
+        {
+          "id": "node-4",
+          "type": "mainBranchNode",
+          "position": {
+            "x": 294,
+            "y": 723
+          },
+          "data": {
+            "label": "Taking decisive actions in 2021, Elena par...",
+            "title": "Taking decisive actions in 2021, Elena par...",
+            "summary": "Taking decisive actions in 2021, Elena partnered with local youth, training over 200 young technicians to install and maintain the microgrids. Within three years, her startup successfully powered o...",
+            "details": "Taking decisive actions in 2021, Elena partnered with local youth, training over 200 young technicians to install and maintain the microgrids. Within three years, her startup successfully powered over 50,000 homes, 120 rural schools, and 45 community health clinics.",
+            "date": "2021",
+            "sourceText": "Taking decisive actions in 2021, Elena partnered with local youth, training over 200 young technicians to install and maintain the microgrids. Within three years, her startup successfully powered over 50,000 homes, 120 rural schools, and 45 community health clinics.",
+            "icon": "🎓",
+            "color": "#8b5cf6",
+            "accentColor": "#8b5cf6",
+            "categoryKey": "Education",
+            "level": "main",
+            "isExpanded": false
+          }
+        },
+        {
+          "id": "node-5",
+          "type": "mainBranchNode",
+          "position": {
+            "x": 167,
+            "y": 332
+          },
+          "data": {
+            "label": "Her key achievements include winning the G...",
+            "title": "Her key achievements include winning the G...",
+            "summary": "Her key achievements include winning the Global CleanTech Innovation Award in 2023 and delivering uninterrupted light to over 250,000 citizens. Elena believes the key lesson is that sustainable tec...",
+            "details": "Her key achievements include winning the Global CleanTech Innovation Award in 2023 and delivering uninterrupted light to over 250,000 citizens. Elena believes the key lesson is that sustainable technology succeeds only when built in true partnership with local communities. Looking toward her future vision, Elena aims to expand solar microgrid networks to cover 500,000 off-grid families by 2030.",
+            "date": "2023",
+            "sourceText": "Her key achievements include winning the Global CleanTech Innovation Award in 2023 and delivering uninterrupted light to over 250,000 citizens. Elena believes the key lesson is that sustainable technology succeeds only when built in true partnership with local communities. Looking toward her future vision, Elena aims to expand solar microgrid networks to cover 500,000 off-grid families by 2030.",
+            "icon": "🏆",
+            "color": "#06b6d4",
+            "accentColor": "#06b6d4",
+            "categoryKey": "Achievement",
+            "level": "main",
+            "isExpanded": false
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "edge-center-node-1",
+          "source": "center-person",
+          "target": "node-1",
+          "type": "smoothstep",
+          "animated": true,
+          "style": {
+            "stroke": "#10b981",
+            "strokeWidth": 3,
+            "strokeDasharray": "4 4"
+          }
+        },
+        {
+          "id": "edge-center-node-2",
+          "source": "center-person",
+          "target": "node-2",
+          "type": "smoothstep",
+          "animated": true,
+          "style": {
+            "stroke": "#3b82f6",
+            "strokeWidth": 3,
+            "strokeDasharray": "4 4"
+          }
+        },
+        {
+          "id": "edge-flow-node-1-node-2",
+          "source": "node-1",
+          "target": "node-2",
+          "type": "bezier",
+          "animated": true,
+          "style": {
+            "stroke": "#7c3aed",
+            "strokeWidth": 2,
+            "opacity": 0.8
+          }
+        },
+        {
+          "id": "edge-center-node-3",
+          "source": "center-person",
+          "target": "node-3",
+          "type": "smoothstep",
+          "animated": true,
+          "style": {
+            "stroke": "#f59e0b",
+            "strokeWidth": 3,
+            "strokeDasharray": "4 4"
+          }
+        },
+        {
+          "id": "edge-flow-node-2-node-3",
+          "source": "node-2",
+          "target": "node-3",
+          "type": "bezier",
+          "animated": true,
+          "style": {
+            "stroke": "#7c3aed",
+            "strokeWidth": 2,
+            "opacity": 0.8
+          }
+        },
+        {
+          "id": "edge-center-node-4",
+          "source": "center-person",
+          "target": "node-4",
+          "type": "smoothstep",
+          "animated": true,
+          "style": {
+            "stroke": "#8b5cf6",
+            "strokeWidth": 3,
+            "strokeDasharray": "4 4"
+          }
+        },
+        {
+          "id": "edge-flow-node-3-node-4",
+          "source": "node-3",
+          "target": "node-4",
+          "type": "bezier",
+          "animated": true,
+          "style": {
+            "stroke": "#7c3aed",
+            "strokeWidth": 2,
+            "opacity": 0.8
+          }
+        },
+        {
+          "id": "edge-center-node-5",
+          "source": "center-person",
+          "target": "node-5",
+          "type": "smoothstep",
+          "animated": true,
+          "style": {
+            "stroke": "#06b6d4",
+            "strokeWidth": 3,
+            "strokeDasharray": "4 4"
+          }
+        },
+        {
+          "id": "edge-flow-node-4-node-5",
+          "source": "node-4",
+          "target": "node-5",
+          "type": "bezier",
+          "animated": true,
+          "style": {
+            "stroke": "#7c3aed",
+            "strokeWidth": 2,
+            "opacity": 0.8
+          }
+        }
+      ]
+    },
+    "publishedAt": "2026-09-01T10:42:50.455Z"
+  },
+  {
+    "id": "id_1788326101409_vri9ktx82",
+    "createdAt": "2026-09-02T05:15:01.409Z",
+    "updatedAt": "2026-09-02T05:15:01.409Z",
+    "authorAdminId": "id_1788326101333_9lxvo22z6",
+    "storyTitle": "From High School Dropout to Tech Unicorn Founder",
+    "personName": "Carlos Mendoza",
+    "profession": "CEO & Co-founder, CodePulse",
+    "location": "Austin, Texas",
+    "category": "Entrepreneurship",
+    "shortSummary": "Carlos overcame early financial hardship and multiple startup rejections to build an AI code review platform valued at $1.2B.",
+    "fullStory": "Carlos Mendoza was born in a working-class neighborhood where computer science education was virtually non-existent. Forced to drop out of high school at age 17 to support his family, Carlos taught himself software development during late-night shifts at a local library.\n\nHis early dream was simple: build software tools that help self-taught developers write bug-free code without requiring expensive engineering degrees. However, his journey was plagued by severe obstacles. His first two software startups failed completely, leaving him heavily in debt and working multiple freelance gigs to survive.\n\nThe turning point occurred when Carlos realized that artificial intelligence could automate complex software quality audits for small dev teams. Driven by determination, he spent 18 months coding the prototype for CodePulse in a small garage.\n\nThrough relentless execution, Carlos secured his first 1,000 paying users without any paid marketing. Fast forward five years, CodePulse raised its Series C funding round, scaling to 500 employees and reaching unicorn status with a $1.2 Billion valuation.\n\nCarlos has created over 800 tech jobs and established a $10M developer scholarship for underrepresented youth. His enduring lesson to aspiring founders is that failure is not the opposite of success, but an essential stepping stone towards it. His future vision is to establish 50 free coding academies across Latin America.",
+    "personImage": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
+    "additionalImages": [],
+    "status": "PUBLISHED",
+    "showName": true,
+    "publicationLocations": [
+      "Homepage",
+      "Success Stories",
+      "Featured Stories"
+    ],
+    "views": 400,
+    "journeyMap": {
+      "title": "From High School Dropout to Tech Unicorn Founder",
+      "personName": "Carlos Mendoza",
+      "summary": "Carlos Mendoza was born in a working-class neighborhood where computer science education was virtually non-existent. Forced to drop out of high school at age 17...",
+      "category": "Success Story",
+      "heroImage": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
+      "milestones": [
+        {
+          "stage": 1,
+          "title": "EARLY BACKGROUND",
+          "description": [
+            "Carlos Mendoza was born in a working-class neighborhood where computer science education was virtually non-existent.",
+            "His early dream was simple: build software tools that help self-taught developers write bug-free code without requiring expensive engineering degrees."
+          ],
+          "icon": "🌱",
+          "importance": "normal",
+          "categoryKey": "beginning",
+          "accentColor": "#10b981"
+        },
+        {
+          "stage": 2,
+          "title": "CHALLENGES & STRUGGLES",
+          "description": [
+            "However, his journey was plagued by severe obstacles.",
+            "His enduring lesson to aspiring founders is that failure is not the opposite of success, but an essential stepping stone towards it."
+          ],
+          "icon": "⚡",
+          "importance": "normal",
+          "categoryKey": "challenges",
+          "accentColor": "#f59e0b"
+        },
+        {
+          "stage": 3,
+          "title": "IMPORTANT EVENTS",
+          "period": "AGE 17",
+          "description": [
+            "Forced to drop out of high school at age 17 to support his family, Carlos taught himself software development during late-night shifts at a local l...",
+            "His first two software startups failed completely, leaving him heavily in debt and working multiple freelance gigs to survive.",
+            "Driven by determination, he spent 18 months coding the prototype for CodePulse in a small garage."
+          ],
+          "icon": "📅",
+          "importance": "normal",
+          "categoryKey": "importantEvents",
+          "accentColor": "#0284c7"
+        },
+        {
+          "stage": 4,
+          "title": "TURNING POINT",
+          "description": [
+            "The turning point occurred when Carlos realized that artificial intelligence could automate complex software quality audits for small dev teams."
+          ],
+          "icon": "🔄",
+          "importance": "high",
+          "categoryKey": "turningPoint",
+          "accentColor": "#8b5cf6"
+        },
+        {
+          "stage": 5,
+          "title": "ACTIONS TAKEN",
+          "description": [
+            "Carlos has created over 800 tech jobs and established a $10M developer scholarship for underrepresented youth."
+          ],
+          "icon": "🚀",
+          "importance": "normal",
+          "categoryKey": "actions",
+          "accentColor": "#06b6d4"
+        },
+        {
+          "stage": 6,
+          "title": "FUTURE VISION",
+          "description": [
+            "His future vision is to establish 50 free coding academies across Latin America."
+          ],
+          "icon": "🔮",
+          "importance": "normal",
+          "categoryKey": "futureVision",
+          "accentColor": "#d946ef"
+        }
+      ],
+      "achievements": [
+        {
+          "value": "17",
+          "label": "RURAL SCHOOLS"
+        },
+        {
+          "value": "18",
+          "label": "MILESTONE"
+        },
+        {
+          "value": "1,000",
+          "label": "ACTIVE USERS"
+        },
+        {
+          "value": "500",
+          "label": "JOBS CREATED"
+        }
+      ],
+      "highlights": [
+        "Carlos",
+        "Software",
+        "Working",
+        "Taught",
+        "Free",
+        "Without",
+        "First",
+        "Small",
+        "Coding",
+        "Codepulse"
+      ],
+      "impact": "",
+      "futureVision": "His future vision is to establish 50 free coding academies across Latin America."
+    },
+    "aiExtractedElements": {
+      "person": "Carlos Mendoza",
+      "profileImage": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
+      "keywords": [
+        "Carlos",
+        "Software",
+        "Working",
+        "Taught",
+        "Free",
+        "Without",
+        "First",
+        "Small",
+        "Coding",
+        "Codepulse",
+        "Mendoza",
+        "Born"
+      ],
+      "sections": {
+        "beginning": [
+          "Carlos Mendoza was born in a working-class neighborhood where computer science education was virtually non-existent.",
+          "His early dream was simple: build software tools that help self-taught developers write bug-free code without requiring expensive engineering degrees."
+        ],
+        "goal": [],
+        "challenges": [
+          "However, his journey was plagued by severe obstacles.",
+          "His enduring lesson to aspiring founders is that failure is not the opposite of success, but an essential stepping stone towards it."
+        ],
+        "importantEvents": [
+          "Forced to drop out of high school at age 17 to support his family, Carlos taught himself software development during late-night shifts at a local library.",
+          "His first two software startups failed completely, leaving him heavily in debt and working multiple freelance gigs to survive.",
+          "Driven by determination, he spent 18 months coding the prototype for CodePulse in a small garage."
+        ],
+        "turningPoint": [
+          "The turning point occurred when Carlos realized that artificial intelligence could automate complex software quality audits for small dev teams."
+        ],
+        "actions": [
+          "Carlos has created over 800 tech jobs and established a $10M developer scholarship for underrepresented youth."
+        ],
+        "achievements": [],
+        "impact": [],
+        "lessons": [],
+        "futureVision": [
+          "His future vision is to establish 50 free coding academies across Latin America."
+        ]
+      }
+    },
+    "aiKeywords": [
+      "Carlos",
+      "Software",
+      "Working",
+      "Taught",
+      "Free",
+      "Without",
+      "First",
+      "Small",
+      "Coding",
+      "Codepulse",
+      "Mendoza",
+      "Born"
+    ],
+    "aiMindMap": {
+      "nodes": [
+        {
+          "id": "center-person",
+          "type": "centerPersonNode",
+          "position": {
+            "x": 510,
+            "y": 410
+          },
+          "data": {
+            "name": "Carlos Mendoza",
+            "title": "From High School Dropout to Tech Unicorn Founder",
+            "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
+            "label": "Carlos Mendoza",
+            "level": "center"
+          }
+        },
+        {
+          "id": "node-1",
+          "type": "mainBranchNode",
+          "position": {
+            "x": 500,
+            "y": 90
+          },
+          "data": {
+            "label": "Carlos Mendoza was born in a working-class...",
+            "title": "Carlos Mendoza was born in a working-class...",
+            "summary": "Carlos Mendoza was born in a working-class neighborhood where computer science education was virtually non-existent. Forced to drop out of high school at age 17 to support his family, Carlos taught...",
+            "details": "Carlos Mendoza was born in a working-class neighborhood where computer science education was virtually non-existent. Forced to drop out of high school at age 17 to support his family, Carlos taught himself software development during late-night shifts at a local library.",
+            "date": "age 17",
+            "sourceText": "Carlos Mendoza was born in a working-class neighborhood where computer science education was virtually non-existent. Forced to drop out of high school at age 17 to support his family, Carlos taught himself software development during late-night shifts at a local library.",
+            "icon": "🌱",
+            "color": "#10b981",
+            "accentColor": "#10b981",
+            "categoryKey": "Beginning",
+            "level": "main",
+            "isExpanded": false
+          }
+        },
+        {
+          "id": "node-2",
+          "type": "mainBranchNode",
+          "position": {
+            "x": 833,
+            "y": 332
+          },
+          "data": {
+            "label": "His early dream was simple",
+            "title": "His early dream was simple",
+            "summary": "His early dream was simple: build software tools that help self-taught developers write bug-free code without requiring expensive engineering degrees. However, his journey was plagued by severe obs...",
+            "details": "His early dream was simple: build software tools that help self-taught developers write bug-free code without requiring expensive engineering degrees. However, his journey was plagued by severe obstacles. His first two software startups failed completely, leaving him heavily in debt and working multiple freelance gigs to survive.",
+            "sourceText": "His early dream was simple: build software tools that help self-taught developers write bug-free code without requiring expensive engineering degrees. However, his journey was plagued by severe obstacles. His first two software startups failed completely, leaving him heavily in debt and working multiple freelance gigs to survive.",
+            "icon": "🌱",
+            "color": "#3b82f6",
+            "accentColor": "#3b82f6",
+            "categoryKey": "Beginning",
+            "level": "main",
+            "isExpanded": false
+          }
+        },
+        {
+          "id": "node-3",
+          "type": "mainBranchNode",
+          "position": {
+            "x": 706,
+            "y": 723
+          },
+          "data": {
+            "label": "The turning point occurred when Carlos rea...",
+            "title": "The turning point occurred when Carlos rea...",
+            "summary": "The turning point occurred when Carlos realized that artificial intelligence could automate complex software quality audits for small dev teams. Driven by determination, he spent 18 months coding t...",
+            "details": "The turning point occurred when Carlos realized that artificial intelligence could automate complex software quality audits for small dev teams. Driven by determination, he spent 18 months coding the prototype for CodePulse in a small garage.",
+            "sourceText": "The turning point occurred when Carlos realized that artificial intelligence could automate complex software quality audits for small dev teams. Driven by determination, he spent 18 months coding the prototype for CodePulse in a small garage.",
+            "icon": "🔄",
+            "color": "#f59e0b",
+            "accentColor": "#f59e0b",
+            "categoryKey": "Turning Point",
+            "level": "main",
+            "isExpanded": false
+          }
+        },
+        {
+          "id": "node-4",
+          "type": "mainBranchNode",
+          "position": {
+            "x": 294,
+            "y": 723
+          },
+          "data": {
+            "label": "Through relentless execution, Carlos secur...",
+            "title": "Through relentless execution, Carlos secur...",
+            "summary": "Through relentless execution, Carlos secured his first 1,000 paying users without any paid marketing. Fast forward five years, CodePulse raised its Series C funding round, scaling to 500 employees ...",
+            "details": "Through relentless execution, Carlos secured his first 1,000 paying users without any paid marketing. Fast forward five years, CodePulse raised its Series C funding round, scaling to 500 employees and reaching unicorn status with a $1.2 Billion valuation.",
+            "sourceText": "Through relentless execution, Carlos secured his first 1,000 paying users without any paid marketing. Fast forward five years, CodePulse raised its Series C funding round, scaling to 500 employees and reaching unicorn status with a $1.2 Billion valuation.",
+            "icon": "🏆",
+            "color": "#8b5cf6",
+            "accentColor": "#8b5cf6",
+            "categoryKey": "Achievement",
+            "level": "main",
+            "isExpanded": false
+          }
+        },
+        {
+          "id": "node-5",
+          "type": "mainBranchNode",
+          "position": {
+            "x": 167,
+            "y": 332
+          },
+          "data": {
+            "label": "Carlos has created over 800 tech jobs and ...",
+            "title": "Carlos has created over 800 tech jobs and ...",
+            "summary": "Carlos has created over 800 tech jobs and established a $10M developer scholarship for underrepresented youth. His enduring lesson to aspiring founders is that failure is not the opposite of succes...",
+            "details": "Carlos has created over 800 tech jobs and established a $10M developer scholarship for underrepresented youth. His enduring lesson to aspiring founders is that failure is not the opposite of success, but an essential stepping stone towards it. His future vision is to establish 50 free coding academies across Latin America.",
+            "sourceText": "Carlos has created over 800 tech jobs and established a $10M developer scholarship for underrepresented youth. His enduring lesson to aspiring founders is that failure is not the opposite of success, but an essential stepping stone towards it. His future vision is to establish 50 free coding academies across Latin America.",
+            "icon": "📌",
+            "color": "#06b6d4",
+            "accentColor": "#06b6d4",
+            "categoryKey": "Milestone",
+            "level": "main",
+            "isExpanded": false
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "edge-center-node-1",
+          "source": "center-person",
+          "target": "node-1",
+          "type": "smoothstep",
+          "animated": true,
+          "style": {
+            "stroke": "#10b981",
+            "strokeWidth": 3,
+            "strokeDasharray": "4 4"
+          }
+        },
+        {
+          "id": "edge-center-node-2",
+          "source": "center-person",
+          "target": "node-2",
+          "type": "smoothstep",
+          "animated": true,
+          "style": {
+            "stroke": "#3b82f6",
+            "strokeWidth": 3,
+            "strokeDasharray": "4 4"
+          }
+        },
+        {
+          "id": "edge-flow-node-1-node-2",
+          "source": "node-1",
+          "target": "node-2",
+          "type": "bezier",
+          "animated": true,
+          "style": {
+            "stroke": "#7c3aed",
+            "strokeWidth": 2,
+            "opacity": 0.8
+          }
+        },
+        {
+          "id": "edge-center-node-3",
+          "source": "center-person",
+          "target": "node-3",
+          "type": "smoothstep",
+          "animated": true,
+          "style": {
+            "stroke": "#f59e0b",
+            "strokeWidth": 3,
+            "strokeDasharray": "4 4"
+          }
+        },
+        {
+          "id": "edge-flow-node-2-node-3",
+          "source": "node-2",
+          "target": "node-3",
+          "type": "bezier",
+          "animated": true,
+          "style": {
+            "stroke": "#7c3aed",
+            "strokeWidth": 2,
+            "opacity": 0.8
+          }
+        },
+        {
+          "id": "edge-center-node-4",
+          "source": "center-person",
+          "target": "node-4",
+          "type": "smoothstep",
+          "animated": true,
+          "style": {
+            "stroke": "#8b5cf6",
+            "strokeWidth": 3,
+            "strokeDasharray": "4 4"
+          }
+        },
+        {
+          "id": "edge-flow-node-3-node-4",
+          "source": "node-3",
+          "target": "node-4",
+          "type": "bezier",
+          "animated": true,
+          "style": {
+            "stroke": "#7c3aed",
+            "strokeWidth": 2,
+            "opacity": 0.8
+          }
+        },
+        {
+          "id": "edge-center-node-5",
+          "source": "center-person",
+          "target": "node-5",
+          "type": "smoothstep",
+          "animated": true,
+          "style": {
+            "stroke": "#06b6d4",
+            "strokeWidth": 3,
+            "strokeDasharray": "4 4"
+          }
+        },
+        {
+          "id": "edge-flow-node-4-node-5",
+          "source": "node-4",
+          "target": "node-5",
+          "type": "bezier",
+          "animated": true,
+          "style": {
+            "stroke": "#7c3aed",
+            "strokeWidth": 2,
+            "opacity": 0.8
+          }
+        }
+      ]
+    },
+    "publishedAt": "2026-08-31T14:09:40.929Z"
+  },
+  {
+    "id": "id_1788326101410_284b3iktk",
+    "createdAt": "2026-09-02T05:15:01.410Z",
+    "updatedAt": "2026-09-02T05:15:01.410Z",
+    "authorAdminId": "id_1788326101333_9lxvo22z6",
+    "storyTitle": "Breaking Olympic Records in Distance Running",
+    "personName": "Elena Rostova",
+    "profession": "Olympic Marathon Gold Medalist",
+    "location": "Zurich, Switzerland",
+    "category": "Sports",
+    "shortSummary": "Elena recovered from a career-threatening knee injury to win Olympic Gold and inspire millions of young female athletes worldwide.",
+    "fullStory": "Elena Rostova began distance running at age ten, discovering her natural endurance on the alpine trails of her home village. Her childhood dream was to stand atop the Olympic podium wearing her national colors.\n\nAt age 22, just one year before the World Championships, Elena suffered a devastating knee ligament tear during training. Doctors warned her that she might never sprint competitively again. The emotional hardship and physical pain tested her resilience to the absolute limit.\n\nHer turning point came during her eight-month intensive rehabilitation. Refusing to succumb to despair, Elena embraced a groundbreaking biomechanical recovery program paired with rigorous mental conditioning and swimming workouts.\n\nTaking disciplined action, Elena returned to competitive running, training 100 miles a week under extreme weather conditions. Her perseverance paid off when she broke the national marathon record and went on to claim the Olympic Gold Medal in Paris with a record-breaking time of 2:18:42.\n\nHer impact extends beyond sport: she launched the RunHer Foundation, providing athletic gear and coaching grants to young girls in underserved areas. Elena's core lesson is that true strength is forged in moments when giving up feels like the easiest option. Her future vision is to coach the next generation of Olympic champion runners.",
+    "personImage": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+    "additionalImages": [],
+    "status": "PUBLISHED",
+    "showName": true,
+    "publicationLocations": [
+      "Homepage",
+      "Success Stories",
+      "Featured Stories"
+    ],
+    "views": 401,
+    "journeyMap": {
+      "title": "Breaking Olympic Records in Distance Running",
+      "personName": "Elena Rostova",
+      "summary": "Elena Rostova began distance running at age ten, discovering her natural endurance on the alpine trails of her home village. Her childhood dream was to stand at...",
+      "category": "Success Story",
+      "heroImage": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+      "milestones": [
+        {
+          "stage": 1,
+          "title": "EARLY BACKGROUND",
+          "description": [
+            "Her childhood dream was to stand atop the Olympic podium wearing her national colors."
+          ],
+          "icon": "🌱",
+          "importance": "normal",
+          "categoryKey": "beginning",
+          "accentColor": "#10b981"
+        },
+        {
+          "stage": 2,
+          "title": "CHALLENGES & STRUGGLES",
+          "description": [
+            "The emotional hardship and physical pain tested her resilience to the absolute limit."
+          ],
+          "icon": "⚡",
+          "importance": "normal",
+          "categoryKey": "challenges",
+          "accentColor": "#f59e0b"
+        },
+        {
+          "stage": 3,
+          "title": "IMPORTANT EVENTS",
+          "period": "AGE 22",
+          "description": [
+            "Elena Rostova began distance running at age ten, discovering her natural endurance on the alpine trails of her home village.",
+            "At age 22, just one year before the World Championships, Elena suffered a devastating knee ligament tear during training.",
+            "Doctors warned her that she might never sprint competitively again."
+          ],
+          "icon": "📅",
+          "importance": "normal",
+          "categoryKey": "importantEvents",
+          "accentColor": "#0284c7"
+        },
+        {
+          "stage": 4,
+          "title": "TURNING POINT",
+          "description": [
+            "Her turning point came during her eight-month intensive rehabilitation."
+          ],
+          "icon": "🔄",
+          "importance": "high",
+          "categoryKey": "turningPoint",
+          "accentColor": "#8b5cf6"
+        },
+        {
+          "stage": 5,
+          "title": "ACTIONS TAKEN",
+          "description": [
+            "Taking disciplined action, Elena returned to competitive running, training 100 miles a week under extreme weather conditions."
+          ],
+          "icon": "🚀",
+          "importance": "normal",
+          "categoryKey": "actions",
+          "accentColor": "#06b6d4"
+        },
+        {
+          "stage": 6,
+          "title": "MAJOR ACHIEVEMENTS",
+          "description": [
+            "Her perseverance paid off when she broke the national marathon record and went on to claim the Olympic Gold Medal in Paris with a record-breaking t...",
+            "Her impact extends beyond sport: she launched the RunHer Foundation, providing athletic gear and coaching grants to young girls in underserved areas."
+          ],
+          "icon": "🏆",
+          "importance": "high",
+          "categoryKey": "achievements",
+          "accentColor": "#eab308"
+        },
+        {
+          "stage": 7,
+          "title": "LESSONS LEARNED",
+          "description": [
+            "Elena's core lesson is that true strength is forged in moments when giving up feels like the easiest option."
+          ],
+          "icon": "💡",
+          "importance": "normal",
+          "categoryKey": "lessons",
+          "accentColor": "#e11d48"
+        },
+        {
+          "stage": 8,
+          "title": "FUTURE VISION",
+          "description": [
+            "Her future vision is to coach the next generation of Olympic champion runners."
+          ],
+          "icon": "🔮",
+          "importance": "normal",
+          "categoryKey": "futureVision",
+          "accentColor": "#d946ef"
+        }
+      ],
+      "achievements": [
+        {
+          "value": "22",
+          "label": "KEY YEAR"
+        },
+        {
+          "value": "100",
+          "label": "MILESTONE"
+        },
+        {
+          "value": "18",
+          "label": "RECORD / AWARD"
+        },
+        {
+          "value": "42",
+          "label": "RECORD / AWARD"
+        }
+      ],
+      "highlights": [
+        "Elena",
+        "Olympic",
+        "Running",
+        "National",
+        "During",
+        "Training",
+        "When",
+        "Record",
+        "Rostova",
+        "Began"
+      ],
+      "impact": "",
+      "futureVision": "Her future vision is to coach the next generation of Olympic champion runners."
+    },
+    "aiExtractedElements": {
+      "person": "Elena Rostova",
+      "profileImage": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+      "keywords": [
+        "Elena",
+        "Olympic",
+        "Running",
+        "National",
+        "During",
+        "Training",
+        "When",
+        "Record",
+        "Rostova",
+        "Began",
+        "Distance",
+        "Discovering"
+      ],
+      "sections": {
+        "beginning": [
+          "Her childhood dream was to stand atop the Olympic podium wearing her national colors."
+        ],
+        "goal": [],
+        "challenges": [
+          "The emotional hardship and physical pain tested her resilience to the absolute limit."
+        ],
+        "importantEvents": [
+          "Elena Rostova began distance running at age ten, discovering her natural endurance on the alpine trails of her home village.",
+          "At age 22, just one year before the World Championships, Elena suffered a devastating knee ligament tear during training.",
+          "Doctors warned her that she might never sprint competitively again."
+        ],
+        "turningPoint": [
+          "Her turning point came during her eight-month intensive rehabilitation."
+        ],
+        "actions": [
+          "Taking disciplined action, Elena returned to competitive running, training 100 miles a week under extreme weather conditions."
+        ],
+        "achievements": [
+          "Her perseverance paid off when she broke the national marathon record and went on to claim the Olympic Gold Medal in Paris with a record-breaking time of 2:18:42.",
+          "Her impact extends beyond sport: she launched the RunHer Foundation, providing athletic gear and coaching grants to young girls in underserved areas."
+        ],
+        "impact": [],
+        "lessons": [
+          "Elena's core lesson is that true strength is forged in moments when giving up feels like the easiest option."
+        ],
+        "futureVision": [
+          "Her future vision is to coach the next generation of Olympic champion runners."
+        ]
+      }
+    },
+    "aiKeywords": [
+      "Elena",
+      "Olympic",
+      "Running",
+      "National",
+      "During",
+      "Training",
+      "When",
+      "Record",
+      "Rostova",
+      "Began",
+      "Distance",
+      "Discovering"
+    ],
+    "aiMindMap": {
+      "nodes": [
+        {
+          "id": "center-person",
+          "type": "centerPersonNode",
+          "position": {
+            "x": 510,
+            "y": 410
+          },
+          "data": {
+            "name": "Elena Rostova",
+            "title": "Breaking Olympic Records in Distance Running",
+            "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+            "label": "Elena Rostova",
+            "level": "center"
+          }
+        },
+        {
+          "id": "node-1",
+          "type": "mainBranchNode",
+          "position": {
+            "x": 500,
+            "y": 90
+          },
+          "data": {
+            "label": "Elena Rostova began distance running at ag...",
+            "title": "Elena Rostova began distance running at ag...",
+            "summary": "Elena Rostova began distance running at age ten, discovering her natural endurance on the alpine trails of her home village. Her childhood dream was to stand atop the Olympic podium wearing her nat...",
+            "details": "Elena Rostova began distance running at age ten, discovering her natural endurance on the alpine trails of her home village. Her childhood dream was to stand atop the Olympic podium wearing her national colors.",
+            "sourceText": "Elena Rostova began distance running at age ten, discovering her natural endurance on the alpine trails of her home village. Her childhood dream was to stand atop the Olympic podium wearing her national colors.",
+            "icon": "🌱",
+            "color": "#10b981",
+            "accentColor": "#10b981",
+            "categoryKey": "Beginning",
+            "level": "main",
+            "isExpanded": false
+          }
+        },
+        {
+          "id": "node-2",
+          "type": "mainBranchNode",
+          "position": {
+            "x": 833,
+            "y": 332
+          },
+          "data": {
+            "label": "At age 22, just one year before the World ...",
+            "title": "At age 22, just one year before the World ...",
+            "summary": "At age 22, just one year before the World Championships, Elena suffered a devastating knee ligament tear during training. Doctors warned her that she might never sprint competitively again. The emo...",
+            "details": "At age 22, just one year before the World Championships, Elena suffered a devastating knee ligament tear during training. Doctors warned her that she might never sprint competitively again. The emotional hardship and physical pain tested her resilience to the absolute limit.",
+            "date": "age 22",
+            "sourceText": "At age 22, just one year before the World Championships, Elena suffered a devastating knee ligament tear during training. Doctors warned her that she might never sprint competitively again. The emotional hardship and physical pain tested her resilience to the absolute limit.",
+            "icon": "📌",
+            "color": "#3b82f6",
+            "accentColor": "#3b82f6",
+            "categoryKey": "Milestone",
+            "level": "main",
+            "isExpanded": false
+          }
+        },
+        {
+          "id": "node-3",
+          "type": "mainBranchNode",
+          "position": {
+            "x": 706,
+            "y": 723
+          },
+          "data": {
+            "label": "Her turning point came during her eight-mo...",
+            "title": "Her turning point came during her eight-mo...",
+            "summary": "Her turning point came during her eight-month intensive rehabilitation. Refusing to succumb to despair, Elena embraced a groundbreaking biomechanical recovery program paired with rigorous mental co...",
+            "details": "Her turning point came during her eight-month intensive rehabilitation. Refusing to succumb to despair, Elena embraced a groundbreaking biomechanical recovery program paired with rigorous mental conditioning and swimming workouts.",
+            "sourceText": "Her turning point came during her eight-month intensive rehabilitation. Refusing to succumb to despair, Elena embraced a groundbreaking biomechanical recovery program paired with rigorous mental conditioning and swimming workouts.",
+            "icon": "🔄",
+            "color": "#f59e0b",
+            "accentColor": "#f59e0b",
+            "categoryKey": "Turning Point",
+            "level": "main",
+            "isExpanded": false
+          }
+        },
+        {
+          "id": "node-4",
+          "type": "mainBranchNode",
+          "position": {
+            "x": 294,
+            "y": 723
+          },
+          "data": {
+            "label": "Taking disciplined action, Elena returned ...",
+            "title": "Taking disciplined action, Elena returned ...",
+            "summary": "Taking disciplined action, Elena returned to competitive running, training 100 miles a week under extreme weather conditions. Her perseverance paid off when she broke the national marathon record a...",
+            "details": "Taking disciplined action, Elena returned to competitive running, training 100 miles a week under extreme weather conditions. Her perseverance paid off when she broke the national marathon record and went on to claim the Olympic Gold Medal in Paris with a record-breaking time of 2:18:42.",
+            "sourceText": "Taking disciplined action, Elena returned to competitive running, training 100 miles a week under extreme weather conditions. Her perseverance paid off when she broke the national marathon record and went on to claim the Olympic Gold Medal in Paris with a record-breaking time of 2:18:42.",
+            "icon": "📌",
+            "color": "#8b5cf6",
+            "accentColor": "#8b5cf6",
+            "categoryKey": "Milestone",
+            "level": "main",
+            "isExpanded": false
+          }
+        },
+        {
+          "id": "node-5",
+          "type": "mainBranchNode",
+          "position": {
+            "x": 167,
+            "y": 332
+          },
+          "data": {
+            "label": "Her impact extends beyond sport",
+            "title": "Her impact extends beyond sport",
+            "summary": "Her impact extends beyond sport: she launched the RunHer Foundation, providing athletic gear and coaching grants to young girls in underserved areas. Elena's core lesson is that true strength is fo...",
+            "details": "Her impact extends beyond sport: she launched the RunHer Foundation, providing athletic gear and coaching grants to young girls in underserved areas. Elena's core lesson is that true strength is forged in moments when giving up feels like the easiest option. Her future vision is to coach the next generation of Olympic champion runners.",
+            "sourceText": "Her impact extends beyond sport: she launched the RunHer Foundation, providing athletic gear and coaching grants to young girls in underserved areas. Elena's core lesson is that true strength is forged in moments when giving up feels like the easiest option. Her future vision is to coach the next generation of Olympic champion runners.",
+            "icon": "🌍",
+            "color": "#06b6d4",
+            "accentColor": "#06b6d4",
+            "categoryKey": "Impact",
+            "level": "main",
+            "isExpanded": false
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "edge-center-node-1",
+          "source": "center-person",
+          "target": "node-1",
+          "type": "smoothstep",
+          "animated": true,
+          "style": {
+            "stroke": "#10b981",
+            "strokeWidth": 3,
+            "strokeDasharray": "4 4"
+          }
+        },
+        {
+          "id": "edge-center-node-2",
+          "source": "center-person",
+          "target": "node-2",
+          "type": "smoothstep",
+          "animated": true,
+          "style": {
+            "stroke": "#3b82f6",
+            "strokeWidth": 3,
+            "strokeDasharray": "4 4"
+          }
+        },
+        {
+          "id": "edge-flow-node-1-node-2",
+          "source": "node-1",
+          "target": "node-2",
+          "type": "bezier",
+          "animated": true,
+          "style": {
+            "stroke": "#7c3aed",
+            "strokeWidth": 2,
+            "opacity": 0.8
+          }
+        },
+        {
+          "id": "edge-center-node-3",
+          "source": "center-person",
+          "target": "node-3",
+          "type": "smoothstep",
+          "animated": true,
+          "style": {
+            "stroke": "#f59e0b",
+            "strokeWidth": 3,
+            "strokeDasharray": "4 4"
+          }
+        },
+        {
+          "id": "edge-flow-node-2-node-3",
+          "source": "node-2",
+          "target": "node-3",
+          "type": "bezier",
+          "animated": true,
+          "style": {
+            "stroke": "#7c3aed",
+            "strokeWidth": 2,
+            "opacity": 0.8
+          }
+        },
+        {
+          "id": "edge-center-node-4",
+          "source": "center-person",
+          "target": "node-4",
+          "type": "smoothstep",
+          "animated": true,
+          "style": {
+            "stroke": "#8b5cf6",
+            "strokeWidth": 3,
+            "strokeDasharray": "4 4"
+          }
+        },
+        {
+          "id": "edge-flow-node-3-node-4",
+          "source": "node-3",
+          "target": "node-4",
+          "type": "bezier",
+          "animated": true,
+          "style": {
+            "stroke": "#7c3aed",
+            "strokeWidth": 2,
+            "opacity": 0.8
+          }
+        },
+        {
+          "id": "edge-center-node-5",
+          "source": "center-person",
+          "target": "node-5",
+          "type": "smoothstep",
+          "animated": true,
+          "style": {
+            "stroke": "#06b6d4",
+            "strokeWidth": 3,
+            "strokeDasharray": "4 4"
+          }
+        },
+        {
+          "id": "edge-flow-node-4-node-5",
+          "source": "node-4",
+          "target": "node-5",
+          "type": "bezier",
+          "animated": true,
+          "style": {
+            "stroke": "#7c3aed",
+            "strokeWidth": 2,
+            "opacity": 0.8
+          }
+        }
+      ]
+    },
+    "publishedAt": "2026-08-30T14:28:52.862Z"
+  }
+]
