@@ -36,6 +36,7 @@ import { AdminCategoriesPage } from './pages/admin/AdminCategoriesPage';
 import { AdminAnalyticsPage } from './pages/admin/AdminAnalyticsPage';
 import { AdminMembersPage } from './pages/admin/AdminMembersPage';
 
+
 // Protected Route Component for Logged-In Users
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -99,6 +100,7 @@ export function App() {
                   <Route path="/story/:id" element={<StoryDetailPage />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/register" element={<RegisterPage />} />
+
                   
                   <Route
                     path="/profile"

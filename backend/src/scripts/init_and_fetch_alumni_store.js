@@ -7,7 +7,9 @@ import dotenv from 'dotenv';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config({ path: path.join(__dirname, '../../.env') });
+const rootEnv = path.resolve(__dirname, '../../../.env');
+const localEnv = path.resolve(__dirname, '../../.env');
+dotenv.config({ path: fs.existsSync(rootEnv) ? rootEnv : localEnv });
 
 const dbConfig = {
   host: process.env.DATABASE_HOST || 'localhost',

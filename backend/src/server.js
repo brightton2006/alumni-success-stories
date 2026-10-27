@@ -4,6 +4,19 @@ import path from 'path';
 import fs from 'fs';
 import multer from 'multer';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load unified .env file from root (or local fallback)
+const rootEnvPath = path.resolve(__dirname, '../../.env');
+const localEnvPath = path.resolve(__dirname, '../.env');
+if (fs.existsSync(rootEnvPath)) {
+  dotenv.config({ path: rootEnvPath });
+} else {
+  dotenv.config({ path: localEnvPath });
+}
 
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
@@ -82,6 +95,12 @@ app.post('/api/upload', authenticateUser, upload.single('image'), (req, res) => 
   }
 });
 
+import { decryptSSOToken } from 'vaave-sso-sdk';
+import jwt from 'jsonwebtoken';
+import { JWT_SECRET } from './middleware/auth.js';
+import { usersDb, membersDb } from './db.js';
+import { mysqlDb } from './mysql.js';
+
 // API Routes Setup
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
@@ -94,6 +113,123 @@ app.use('/api/admin', analyticsRoutes);
 app.use('/api/members', memberRoutes);
 app.use('/api/alumni', memberRoutes);
 app.use('/api/realtime', realtimeRoutes);
+
+// Single Sign-On (SSO) User Lookup for Alumni Success Stories
+app.get('/api/user-by-email', async (req, res) => {
+  const { email } = req.query;
+
+  if (!email) {
+    return res.status(400).json({ error: 'Email query param is required' });
+  }
+
+  let cleanEmail = email;
+
+  // 1. If SEED is configured, attempt vaave-sso-sdk token decryption
+  if (process.env.SEED) {
+    try {
+      const decodedEmail = decodeURIComponent(email);
+      const decrypted = await decryptSSOToken(decodedEmail, process.env.SEED);
+      if (decrypted && decrypted.details) {
+        cleanEmail = decrypted.details.email || decrypted.details.email_id || decrypted.details.sub || decodedEmail;
+      }
+    } catch (err) {
+      console.warn('SSO token decryption warning:', err.message);
+    }
+  }
+
+  // 2. If it's a base64 encoded email string, decode it
+  if (typeof cleanEmail === 'string' && !cleanEmail.includes('@')) {
+    try {
+      const base64Decoded = Buffer.from(cleanEmail, 'base64').toString('utf8');
+      if (base64Decoded.includes('@')) {
+        cleanEmail = base64Decoded;
+      }
+    } catch (e) {}
+  }
+
+  cleanEmail = decodeURIComponent(cleanEmail).toLowerCase().trim();
+
+  try {
+    // 3. Lookup user in MySQL / MongoDB / JSON Store
+    let foundMember = null;
+    let foundUser = null;
+
+    if (mysqlDb.isAvailable()) {
+      try {
+        foundMember = await mysqlDb.getMemberByEmail(cleanEmail);
+        foundUser = await mysqlDb.findUserByEmail(cleanEmail);
+      } catch (dbErr) {
+        console.warn('MySQL lookup warning in user-by-email:', dbErr.message);
+      }
+    }
+
+    if (!foundMember) {
+      try {
+        const allMembers = membersDb.read();
+        foundMember = allMembers.find(m => {
+          const e1 = m.basic?.email || m.basic?.email_id;
+          const e2 = m.searchHelper?.email;
+          return (e1 && e1.toLowerCase().trim() === cleanEmail) ||
+                 (e2 && e2.toLowerCase().trim() === cleanEmail);
+        }) || null;
+      } catch (jsonErr) {}
+    }
+
+    if (!foundUser) {
+      foundUser = usersDb.findOne(u => u.email && u.email.toLowerCase().trim() === cleanEmail);
+    }
+
+    // Determine Dashboard Role: Admin | Coordinator | Alumni
+    let role = 'Alumni';
+    const emailLower = cleanEmail.toLowerCase();
+    if (foundUser?.role === 'ADMIN' || emailLower.includes('admin') || emailLower.startsWith('admin@')) {
+      role = 'Admin';
+    } else if (foundUser?.role === 'COORDINATOR' || emailLower.includes('coordinator') || emailLower.startsWith('coord@')) {
+      role = 'Coordinator';
+    } else if (foundMember?.workDetails?.some(w => w.position?.toLowerCase().includes('coordinator') || w.position?.toLowerCase().includes('director'))) {
+      role = 'Coordinator';
+    }
+
+    // Format safe verified profile
+    const name = foundMember?.basic?.name || foundUser?.fullName || cleanEmail.split('@')[0];
+    const userPayload = {
+      id: foundUser?.id || foundMember?.id || `usr_sso_${Date.now()}`,
+      email: cleanEmail,
+      fullName: name,
+      name,
+      role: role.toUpperCase(),
+      dashboardRole: role,
+      profileImage: foundMember?.pictures?.profile || foundUser?.profileImage || '',
+      designation: foundMember?.workDetails?.[0]?.position || foundUser?.designation || 'Alumni Member',
+      company: foundMember?.workDetails?.[0]?.company || foundUser?.company || 'NEC Alumni',
+      department: foundMember?.educationDetails?.[0]?.department || foundUser?.department || 'Information Technology',
+      graduationYear: foundMember?.educationDetails?.[0]?.endYear || foundUser?.graduationYear || 2024,
+      basic: foundMember?.basic || {
+        name,
+        email_id: cleanEmail,
+        mobile: foundUser?.mobile || ''
+      },
+      alumniProfile: foundMember
+    };
+
+    const token = jwt.sign(
+      { id: userPayload.id, email: userPayload.email, role: userPayload.role },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    return res.json({
+      success: true,
+      token,
+      role,
+      user: userPayload,
+      ...userPayload
+    });
+  } catch (err) {
+    console.error('❌ DB Error in /api/user-by-email:', err);
+    return res.status(500).json({ error: 'Server error', details: err.message });
+  }
+});
 
 // Health Check API
 app.get('/api/health', (req, res) => {

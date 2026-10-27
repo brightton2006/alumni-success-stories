@@ -313,6 +313,20 @@ export const AdminPendingPage: React.FC = () => {
                     <p className="text-xs text-[#52606D]">
                       Protagonist: <strong className="text-[#172B3A]">{selectedStory.personName}</strong> • Submitter: {selectedStory.submittedByUserName} ({selectedStory.submittedByUserEmail})
                     </p>
+                    {(selectedStory.beneficiaryName || selectedStory.supporterName) && (
+                      <div className="flex flex-wrap items-center gap-3 mt-1.5 text-xs text-slate-700 bg-slate-50 px-2.5 py-1 rounded border border-slate-200">
+                        {selectedStory.beneficiaryName && (
+                          <span>
+                            🤝 <strong>Beneficiary:</strong> {selectedStory.beneficiaryName} {selectedStory.beneficiaryBatch ? `(Batch - ${selectedStory.beneficiaryBatch})` : ''}
+                          </span>
+                        )}
+                        {selectedStory.supporterName && (
+                          <span>
+                            🌟 <strong>Supporter / Mentor:</strong> {selectedStory.supporterName} {selectedStory.supporterBatch ? `(Batch - ${selectedStory.supporterBatch})` : ''}
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2">

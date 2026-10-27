@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Eye, ArrowRight, Share2, Check } from 'lucide-react';
-import { getStoryAuthorDisplayName } from '../../utils/api';
+import { getStoryAuthorDisplayName, getStoryBeneficiaryDisplayName, getStorySupporterDisplayName } from '../../utils/api';
 import type { Story } from '../../types';
 
 interface StoryCardProps {
@@ -38,9 +38,16 @@ export const StoryCard: React.FC<StoryCardProps> = ({ story }) => {
       <div className="flex flex-col flex-1">
         {/* Top Row: Category Badge & Share Button */}
         <div className="flex items-center justify-between mb-3">
-          <span className="px-2.5 py-0.5 rounded-md bg-primary-soft text-primary text-[11px] font-semibold uppercase tracking-wider border border-purple-200">
-            {category || 'Alumni Story'}
-          </span>
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <span className="px-2.5 py-0.5 rounded-md bg-primary-soft text-primary text-[11px] font-semibold uppercase tracking-wider border border-purple-200">
+              {category || 'Alumni Story'}
+            </span>
+            {(story.beneficiaryName || story.supporterName) && (
+              <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-[10px] font-medium border border-slate-200 flex items-center gap-1">
+                <span>🤝 Support Story</span>
+              </span>
+            )}
+          </div>
 
           <button
             type="button"
@@ -88,9 +95,20 @@ export const StoryCard: React.FC<StoryCardProps> = ({ story }) => {
         </div>
 
         {/* Story Title */}
-        <h3 className="text-sm font-semibold text-slate-800 leading-snug mb-3 line-clamp-2 group-hover:text-primary transition-colors">
+        <h3 className="text-sm font-semibold text-slate-800 leading-snug mb-2 line-clamp-2 group-hover:text-primary transition-colors">
           {storyTitle}
         </h3>
+
+        {(story.beneficiaryName || story.supporterName) && (
+          <div className="text-[11px] text-slate-500 bg-slate-50 p-2 rounded border border-slate-100 mb-2 space-y-0.5">
+            {story.beneficiaryName && (
+              <div className="truncate"><span className="font-semibold text-slate-700">Beneficiary:</span> {getStoryBeneficiaryDisplayName(story)}</div>
+            )}
+            {story.supporterName && (
+              <div className="truncate"><span className="font-semibold text-slate-700">Supporter:</span> {getStorySupporterDisplayName(story)}</div>
+            )}
+          </div>
+        )}
 
       </div>
 

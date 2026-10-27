@@ -637,6 +637,12 @@ export const AdminStoriesPage: React.FC = () => {
                   <p><strong className="text-[#172B3A]">Submitted By:</strong> {reviewStory.submittedByUserName || reviewStory.personName}</p>
                   <p><strong className="text-[#172B3A]">Email:</strong> {reviewStory.submittedByUserEmail || 'N/A'}</p>
                   <p><strong className="text-[#172B3A]">Date:</strong> {new Date(reviewStory.createdAt).toLocaleDateString()}</p>
+                  {reviewStory.beneficiaryName && (
+                    <p><strong className="text-[#172B3A]">Beneficiary:</strong> {reviewStory.beneficiaryName} {reviewStory.beneficiaryBatch ? `(Batch - ${reviewStory.beneficiaryBatch})` : ''}</p>
+                  )}
+                  {reviewStory.supporterName && (
+                    <p><strong className="text-[#172B3A]">Supporter:</strong> {reviewStory.supporterName} {reviewStory.supporterBatch ? `(Batch - ${reviewStory.supporterBatch})` : ''}</p>
+                  )}
                 </div>
               </div>
 

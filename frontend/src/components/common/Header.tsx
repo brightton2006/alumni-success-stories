@@ -35,7 +35,7 @@ export const Header: React.FC = () => {
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
                 <span className="text-lg sm:text-xl font-bold tracking-tight text-primary">
-                  NEC <span className="text-slate-800 font-extrabold">ALUMNI PORTAL</span>
+                  NEC <span className="text-slate-800 font-extrabold">SUCCESS STORIES</span>
                 </span>
                 {isAdmin && (
                   <span className="px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-primary-soft text-primary rounded border border-purple-200">

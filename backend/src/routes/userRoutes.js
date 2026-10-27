@@ -36,6 +36,21 @@ async function formatSafeUser(u) {
   const fullName = alumniProfile?.basic?.name || u.full_name || u.fullName || u.email.split('@')[0];
   const mobile = u.phone_number || u.mobile || alumniProfile?.contactDetails?.mobile || '';
   const profileImage = alumniProfile?.pictures?.profile || alumniProfile?.pictures?.thumb || u.profile_image || u.profileImage || '';
+  
+  const designation = u.designation || (alumniProfile?.workDetails?.[0]?.position) || 'Alumni Member';
+  const organization = u.organization || u.company || (alumniProfile?.workDetails?.[0]?.company) || '';
+  const department = u.department || u.stream || (alumniProfile?.educationDetails?.[0]?.stream || alumniProfile?.educationDetails?.[0]?.course) || '';
+  const graduationYear = u.graduation_year || u.graduationYear || (alumniProfile?.educationDetails?.[0]?.endYear ? parseInt(alumniProfile.educationDetails[0].endYear) : null);
+  const location = u.location || (alumniProfile?.contactDetails?.currentLocation?.city ? `${alumniProfile.contactDetails.currentLocation.city}, ${alumniProfile.contactDetails.currentLocation.country || ''}`.replace(/,\s*$/, '') : '');
+  const bio = u.bio || '';
+  const contactPrivacy = u.contact_privacy || u.contactPrivacy || 'SHOW_ALL';
+  
+  let achievements = [];
+  try {
+    if (u.achievements) {
+      achievements = typeof u.achievements === 'string' ? JSON.parse(u.achievements) : u.achievements;
+    }
+  } catch (e) {}
 
   const rawDate = u.created_at || u.createdAt || alumniProfile?.membershipDetails?.[0]?.registeredOn;
   let createdAt = new Date().toISOString();
@@ -54,6 +69,16 @@ async function formatSafeUser(u) {
     role: u.role || 'CUSTOMER',
     mobile,
     profileImage,
+    designation,
+    organization,
+    company: organization,
+    department,
+    stream: department,
+    graduationYear,
+    location,
+    bio,
+    contactPrivacy,
+    achievements,
     googleId: u.google_id || u.googleId || null,
     authProvider: u.auth_provider || u.authProvider || 'local',
     isEmailVerified: Boolean(u.is_email_verified ?? u.emailVerified ?? true),
@@ -95,23 +120,51 @@ router.get('/profile', authenticateUser, async (req, res) => {
 // UPDATE USER PROFILE
 router.put('/profile', authenticateUser, async (req, res) => {
   try {
-    const { fullName, mobile, profileImage } = req.body;
+    const {
+      fullName,
+      mobile,
+      profileImage,
+      designation,
+      organization,
+      company,
+      department,
+      stream,
+      graduationYear,
+      location,
+      bio,
+      contactPrivacy,
+      achievements
+    } = req.body;
+
     let updatedUser = null;
 
+    const payload = {
+      full_name: fullName !== undefined ? fullName.trim() : undefined,
+      fullName: fullName !== undefined ? fullName.trim() : undefined,
+      phone_number: mobile !== undefined ? mobile.trim() : undefined,
+      mobile: mobile !== undefined ? mobile.trim() : undefined,
+      profile_image: profileImage !== undefined ? profileImage : undefined,
+      profileImage: profileImage !== undefined ? profileImage : undefined,
+      designation: designation !== undefined ? designation.trim() : undefined,
+      organization: (organization || company) !== undefined ? (organization || company).trim() : undefined,
+      department: (department || stream) !== undefined ? (department || stream).trim() : undefined,
+      graduation_year: graduationYear !== undefined ? parseInt(graduationYear) || null : undefined,
+      graduationYear: graduationYear !== undefined ? parseInt(graduationYear) || null : undefined,
+      location: location !== undefined ? location.trim() : undefined,
+      bio: bio !== undefined ? bio.trim() : undefined,
+      contact_privacy: contactPrivacy !== undefined ? contactPrivacy : undefined,
+      contactPrivacy: contactPrivacy !== undefined ? contactPrivacy : undefined,
+      achievements: achievements !== undefined ? achievements : undefined
+    };
+
+    // Remove undefined values
+    Object.keys(payload).forEach(k => payload[k] === undefined && delete payload[k]);
+
     if (mysqlDb.isAvailable()) {
-      const updates = {};
-      if (fullName !== undefined && fullName.trim() !== '') updates.full_name = fullName.trim();
-      if (mobile !== undefined) updates.phone_number = mobile.trim();
-      if (profileImage !== undefined) updates.profile_image = profileImage;
-
-      updatedUser = await mysqlDb.updateUser(req.user.id, updates);
-    } else {
-      const updates = {};
-      if (fullName !== undefined && fullName.trim() !== '') updates.fullName = fullName.trim();
-      if (mobile !== undefined) updates.mobile = mobile.trim();
-      if (profileImage !== undefined) updates.profileImage = profileImage;
-
-      updatedUser = usersDb.updateById(req.user.id, updates);
+      updatedUser = await mysqlDb.updateUser(req.user.id, payload);
+    }
+    if (!updatedUser) {
+      updatedUser = usersDb.updateById(req.user.id, payload);
     }
 
     if (!updatedUser) {

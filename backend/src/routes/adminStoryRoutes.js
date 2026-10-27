@@ -42,16 +42,25 @@ router.post('/', async (req, res) => {
       shortSummary,
       fullStory,
       personImage,
-      additionalImages
+      additionalImages,
+      beneficiaryName,
+      beneficiaryBatch,
+      supporterName,
+      supporterBatch,
+      storyRole
     } = req.body;
 
-    if (!personName || !storyTitle || !fullStory) {
-      return res.status(400).json({ success: false, error: 'Person name, story title, and complete story text are required.' });
+    if (!storyTitle || !fullStory) {
+      return res.status(400).json({ success: false, error: 'Story title and complete narrative are required.' });
     }
+
+    const resolvedPersonName = (personName && personName.trim())
+      ? personName.trim()
+      : (req.user?.fullName || 'Inspiring Alumnus');
 
     const aiResult = await analyzeStoryWithAI({
       storyTitle: storyTitle.trim(),
-      personName: personName.trim(),
+      personName: resolvedPersonName,
       fullStory: fullStory.trim(),
       personImage: personImage || '',
       category
@@ -62,7 +71,12 @@ router.post('/', async (req, res) => {
       submittedByUserId: null,
       submittedByUserName: req.user.fullName,
       submittedByUserEmail: req.user.email,
-      personName: personName.trim(),
+      personName: resolvedPersonName,
+      beneficiaryName: beneficiaryName ? beneficiaryName.trim() : '',
+      beneficiaryBatch: beneficiaryBatch ? String(beneficiaryBatch).trim() : null,
+      supporterName: supporterName ? supporterName.trim() : '',
+      supporterBatch: supporterBatch ? String(supporterBatch).trim() : null,
+      storyRole: storyRole || 'GENERAL',
       storyTitle: storyTitle.trim(),
       profession: profession ? profession.trim() : 'Inspiring Personality',
       location: location ? location.trim() : 'Global',
@@ -310,11 +324,12 @@ router.post('/:id/publish', (req, res) => {
       return res.status(404).json({ success: false, error: 'Story not found.' });
     }
 
-    if (!story.personName || !story.storyTitle || !story.category || !story.fullStory) {
-      return res.status(400).json({ success: false, error: 'Cannot publish incomplete story. Check title, person name, category, and content.' });
+    if (!story.storyTitle || !story.category || !story.fullStory) {
+      return res.status(400).json({ success: false, error: 'Cannot publish incomplete story. Check title, category, and content.' });
     }
 
     const updatedStory = storiesDb.updateById(id, {
+      personName: story.personName || 'Inspiring Alumnus',
       status: 'PUBLISHED',
       publishedAt: story.publishedAt || new Date().toISOString()
     });

@@ -7,6 +7,16 @@ export interface User {
   mobile?: string;
   role: UserRole;
   profileImage?: string;
+  designation?: string;
+  organization?: string;
+  company?: string;
+  department?: string;
+  stream?: string;
+  graduationYear?: number | null;
+  location?: string;
+  bio?: string;
+  contactPrivacy?: string;
+  achievements?: Array<{ id?: string; title: string; category?: string; year?: number | string; description?: string }>;
   isActive: boolean;
   createdAt: string;
   storiesCount?: number;
@@ -226,6 +236,11 @@ export interface Story {
   department?: string;
   isVerified?: boolean;
   authorMemberId?: string;
+  beneficiaryName?: string;
+  beneficiaryBatch?: string;
+  supporterName?: string;
+  supporterBatch?: string;
+  storyRole?: 'BENEFICIARY' | 'SUPPORTER' | 'BOTH' | 'GENERAL' | string;
   createdAt: string;
   updatedAt?: string;
   publishedAt?: string | null;
@@ -408,6 +423,45 @@ export interface MemberPaginatedResponse {
     hasNext: boolean;
     hasPrev: boolean;
   };
+}
+
+export interface AlumniBenefit {
+  id: string;
+  userId: string;
+  authorName: string;
+  authorEmail: string;
+  designation?: string;
+  organization?: string;
+  graduationYear?: number | null;
+  category: string;
+  title: string;
+  description: string;
+  skillsOffered?: string;
+  availability?: string;
+  contactPreference: string;
+  contactDetails?: string;
+  relevantLinks?: string;
+  isFinancialAid: boolean;
+  financialAmount?: string;
+  privacySetting: string;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED';
+  createdAt: string;
+}
+
+export interface BenefitRequest {
+  id: string;
+  benefitId: string;
+  benefitTitle?: string;
+  benefitCategory?: string;
+  authorName?: string;
+  userId: string;
+  applicantName: string;
+  applicantEmail: string;
+  applicantRole: string;
+  message: string;
+  resumeLink?: string;
+  status: 'PENDING' | 'ACCEPTED' | 'DECLINED';
+  createdAt: string;
 }
 
 

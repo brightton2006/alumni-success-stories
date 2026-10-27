@@ -82,9 +82,22 @@ function sanitizeStoryForPublic(story) {
   sanitized.company = story.company || '';
   sanitized.department = story.department || story.stream || '';
   sanitized.isVerified = story.isVerified !== false;
+  sanitized.storyRole = story.storyRole || 'GENERAL';
 
   if (isNameHidden) {
-    const rawNames = [story.personName, story.submittedByUserName];
+    const beneficiaryBatch = story.beneficiaryBatch || story.beneficiaryBatchYear || story.batchNumber || story.batchYear || story.batch;
+    const beneficiarySuffix = getBatchSuffix(beneficiaryBatch);
+    sanitized.beneficiaryName = story.beneficiaryName 
+      ? (beneficiarySuffix ? `Batch - ${beneficiarySuffix} Alumni` : 'Batch Alumni') 
+      : '';
+
+    const supporterBatch = story.supporterBatch || story.supporterBatchYear || story.batchNumber || story.batchYear || story.batch;
+    const supporterSuffix = getBatchSuffix(supporterBatch);
+    sanitized.supporterName = story.supporterName 
+      ? (supporterSuffix ? `Batch - ${supporterSuffix} Alumni` : 'Batch Alumni') 
+      : '';
+
+    const rawNames = [story.personName, story.submittedByUserName, story.beneficiaryName, story.supporterName];
     const nameTokens = [];
     rawNames.forEach(n => {
       if (n && typeof n === 'string') {
@@ -378,10 +391,10 @@ router.get('/keywords/cloud', (req, res) => {
   }
 });
 
-// GET PUBLIC PUBLISHED STORIES (with search, category, location, sort)
+// GET PUBLIC PUBLISHED STORIES (with search, category, location, graduationYear, department, industry, sort, pagination)
 router.get('/', (req, res) => {
   try {
-    const { search, category, location, sort } = req.query;
+    const { search, category, location, graduationYear, department, industry, sort, page, limit } = req.query;
 
     // RULE: Public API must ONLY return status === 'PUBLISHED'
     let stories = storiesDb.find(s => s.status === 'PUBLISHED');
@@ -406,6 +419,33 @@ router.get('/', (req, res) => {
       stories = stories.filter(s => s.category?.toLowerCase() === category.toLowerCase());
     }
 
+    // Filtering by graduation year
+    if (graduationYear && graduationYear !== 'All') {
+      const gYrStr = String(graduationYear).trim();
+      stories = stories.filter(s => {
+        const bYr = String(s.batchYear || s.graduationYear || s.batchNumber || '').trim();
+        return bYr === gYrStr || bYr.includes(gYrStr);
+      });
+    }
+
+    // Filtering by department / stream
+    if (department && department !== 'All') {
+      const d = department.toLowerCase().trim();
+      stories = stories.filter(s => {
+        const dept = (s.department || s.stream || '').toLowerCase();
+        return dept.includes(d);
+      });
+    }
+
+    // Filtering by industry / company
+    if (industry && industry !== 'All') {
+      const ind = industry.toLowerCase().trim();
+      stories = stories.filter(s => {
+        const comp = (s.company || s.profession || s.role || '').toLowerCase();
+        return comp.includes(ind);
+      });
+    }
+
     // Filtering by search term
     if (search && search.trim()) {
       const q = search.toLowerCase().trim();
@@ -416,9 +456,11 @@ router.get('/', (req, res) => {
         const locMatch = s.location?.toLowerCase().includes(q);
         const summaryMatch = s.shortSummary?.toLowerCase().includes(q);
         const catMatch = s.category?.toLowerCase().includes(q);
-        const keywordMatch = Array.isArray(s.aiKeywords) && s.aiKeywords.some(k => k.toLowerCase().includes(q));
+        const companyMatch = s.company?.toLowerCase().includes(q);
+        const deptMatch = s.department?.toLowerCase().includes(q);
+        const keywordMatch = Array.isArray(s.aiKeywords) && s.aiKeywords.some(k => (typeof k === 'string' ? k : k?.word)?.toLowerCase().includes(q));
 
-        return titleMatch || nameMatch || locMatch || summaryMatch || catMatch || keywordMatch;
+        return titleMatch || nameMatch || locMatch || summaryMatch || catMatch || companyMatch || deptMatch || keywordMatch;
       });
     }
 
@@ -429,11 +471,21 @@ router.get('/', (req, res) => {
       stories.sort((a, b) => ((b.views || 0) + (new Date(b.publishedAt).getTime() || 0)) - ((a.views || 0) + (new Date(a.publishedAt).getTime() || 0)));
     } else {
       // Default: Most recent
-      stories.sort((a, b) => new Date(b.publishedAt || b.createdAt) - new Date(a.publishedAt || a.createdAt));
+      stories.sort((a, b) => new Date(b.publishedAt || b.createdAt).getTime() - new Date(a.publishedAt || a.createdAt).getTime());
+    }
+
+    const total = stories.length;
+    let paginatedStories = stories;
+
+    if (page || limit) {
+      const pageNum = Math.max(1, parseInt(page) || 1);
+      const limitNum = Math.max(1, parseInt(limit) || 12);
+      const startIdx = (pageNum - 1) * limitNum;
+      paginatedStories = stories.slice(startIdx, startIdx + limitNum);
     }
 
     // Return sanitized story cards
-    const cardData = stories.map(s => {
+    const cardData = paginatedStories.map(s => {
       const sanitized = sanitizeStoryForPublic(s);
       return {
         id: sanitized.id,
@@ -457,7 +509,13 @@ router.get('/', (req, res) => {
       };
     });
 
-    return res.json({ success: true, stories: cardData, total: cardData.length });
+    return res.json({
+      success: true,
+      stories: cardData,
+      total,
+      page: page ? parseInt(page) : 1,
+      totalPages: limit ? Math.ceil(total / parseInt(limit)) : 1
+    });
   } catch (error) {
     console.error('Error fetching public stories:', error);
     return res.status(500).json({ success: false, error: 'Failed to fetch published stories.' });
@@ -473,19 +531,31 @@ router.get('/stats/summary', (req, res) => {
       return !locs.includes('Do Not Publish');
     });
 
-    const totalStories = publishedStories.length;
+    const totalSuccessStories = publishedStories.length;
+    const verifiedSuccessStories = publishedStories.filter(s => s.isVerified !== false).length;
     const peopleFeatured = new Set(
       publishedStories.map(s => s.showName === false ? 'Anonymous' : s.personName)
     ).size;
-    const communitiesReached = new Set(publishedStories.map(s => s.location).filter(Boolean)).size || totalStories;
+
+    const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
+    const recentSuccessStories = publishedStories.filter(s => {
+      const d = new Date(s.publishedAt || s.createdAt).getTime();
+      return !isNaN(d) && d >= thirtyDaysAgo;
+    }).length || Math.min(totalSuccessStories, 5);
+
+    const communitiesReached = new Set(publishedStories.map(s => s.location).filter(Boolean)).size || totalSuccessStories;
     const totalViews = publishedStories.reduce((sum, s) => sum + (s.views || 0), 0);
 
     return res.json({
       success: true,
-      storiesShared: totalStories,
+      totalSuccessStories,
+      verifiedSuccessStories,
+      alumniFeatured: peopleFeatured,
+      recentSuccessStories,
+      storiesShared: totalSuccessStories,
       peopleFeatured: peopleFeatured,
       communitiesReached: communitiesReached,
-      storiesInspiringChange: Math.max(totalStories, totalViews)
+      storiesInspiringChange: Math.max(totalSuccessStories, totalViews)
     });
   } catch (error) {
     return res.status(500).json({ success: false, error: 'Failed to load story statistics.' });

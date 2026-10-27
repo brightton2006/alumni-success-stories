@@ -547,5 +547,66 @@ export function getStoryAuthorDisplayName(story?: Partial<Story> | null): string
   return story.personName || 'NEC Alumni';
 }
 
+/**
+ * Format hidden story beneficiary identity into "Batch - XX Alumni" from beneficiary batch or story metadata
+ */
+export function getBatchBeneficiaryDisplay(story?: Partial<Story> | null): string {
+  if (!story) return 'Batch - 26 Alumni';
+  const batchCandidate = story.beneficiaryBatch || (story as any)?.beneficiaryBatchYear || story.batchNumber || story.batchYear;
+  if (batchCandidate) {
+    const str = String(batchCandidate).trim();
+    const digits = str.match(/\d+/);
+    if (digits) {
+      const num = digits[0];
+      const suffix = num.length === 4 ? num.slice(-2) : num;
+      return `Batch - ${suffix} Alumni`;
+    }
+    return `Batch - ${str} Alumni`;
+  }
+  return getBatchAlumniDisplay(story);
+}
+
+/**
+ * Format hidden story supporter identity into "Batch - XX Alumni" from supporter batch or story metadata
+ */
+export function getBatchSupporterDisplay(story?: Partial<Story> | null): string {
+  if (!story) return 'Batch - 26 Alumni';
+  const batchCandidate = story.supporterBatch || (story as any)?.supporterBatchYear || story.batchNumber || story.batchYear;
+  if (batchCandidate) {
+    const str = String(batchCandidate).trim();
+    const digits = str.match(/\d+/);
+    if (digits) {
+      const num = digits[0];
+      const suffix = num.length === 4 ? num.slice(-2) : num;
+      return `Batch - ${suffix} Alumni`;
+    }
+    return `Batch - ${str} Alumni`;
+  }
+  return getBatchAlumniDisplay(story);
+}
+
+/**
+ * Returns either beneficiary's real name or "Batch - XX Alumni" if name is hidden
+ */
+export function getStoryBeneficiaryDisplayName(story?: Partial<Story> | null): string {
+  if (!story || !story.beneficiaryName) return '';
+  if (story.showName === false) {
+    return getBatchBeneficiaryDisplay(story);
+  }
+  return story.beneficiaryName;
+}
+
+/**
+ * Returns either supporter's real name or "Batch - XX Alumni" if name is hidden
+ */
+export function getStorySupporterDisplayName(story?: Partial<Story> | null): string {
+  if (!story || !story.supporterName) return '';
+  if (story.showName === false) {
+    return getBatchSupporterDisplay(story);
+  }
+  return story.supporterName;
+}
+
+
 
 

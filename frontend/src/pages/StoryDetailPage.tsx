@@ -6,7 +6,7 @@ import {
   MessageSquare, Send, CheckCircle2, ThumbsUp, Check, User, Copy
 } from 'lucide-react';
 import type { Story, User as UserType } from '../types';
-import { fetchJsonSafely, getMockStories, getStoryAuthorDisplayName } from '../utils/api';
+import { fetchJsonSafely, getMockStories, getStoryAuthorDisplayName, getStoryBeneficiaryDisplayName, getStorySupporterDisplayName } from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 
 interface CommentItem {
@@ -504,6 +504,34 @@ export const StoryDetailPage: React.FC = () => {
               </p>
             </div>
           </div>
+
+          {/* Beneficiary & Supporter Information Banner */}
+          {(story.beneficiaryName || story.supporterName) && (
+            <div className="flex flex-wrap items-center gap-5 p-3.5 rounded-lg bg-slate-50 border border-slate-200/90 text-xs">
+              {story.beneficiaryName && (
+                <div className="flex items-center gap-2.5">
+                  <div className="w-7 h-7 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center font-bold text-xs">
+                    🤝
+                  </div>
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Beneficiary</span>
+                    <span className="font-semibold text-slate-900">{getStoryBeneficiaryDisplayName(story)}</span>
+                  </div>
+                </div>
+              )}
+              {story.supporterName && (
+                <div className="flex items-center gap-2.5">
+                  <div className="w-7 h-7 rounded-md bg-purple-50 text-primary border border-purple-200 flex items-center justify-center font-bold text-xs">
+                    🌟
+                  </div>
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Supporter</span>
+                    <span className="font-semibold text-slate-900">{getStorySupporterDisplayName(story)}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Story Narrative */}
           <div className="space-y-5 text-slate-800 text-[15px] sm:text-base leading-relaxed font-normal">

@@ -1,7 +1,57 @@
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load unified .env file from root (or local fallback)
+const rootEnvPath = path.resolve(__dirname, '../../.env');
+const localEnvPath = path.resolve(__dirname, '../.env');
+if (fs.existsSync(rootEnvPath)) {
+  dotenv.config({ path: rootEnvPath });
+} else {
+  dotenv.config({ path: localEnvPath });
+}
+
+// Configure SSL for TiDB Cloud or secure MySQL
+let sslConfig = undefined;
+function resolveCaPath(p) {
+  if (!p) return null;
+  if (path.isAbsolute(p) && fs.existsSync(p)) return p;
+  const candidates = [
+    path.resolve(process.cwd(), p),
+    path.resolve(__dirname, '..', p),
+    path.resolve(__dirname, '../..', p),
+    path.resolve(__dirname, '../certs/ca.pem')
+  ];
+  return candidates.find(c => fs.existsSync(c)) || null;
+}
+
+const caCandidatePath = resolveCaPath(process.env.DATABASE_SSL_CA) || path.resolve(__dirname, '../certs/ca.pem');
+
+if (
+  process.env.DATABASE_SSL === 'true' ||
+  process.env.TIDB_ENABLE_SSL === 'true' ||
+  parseInt(process.env.DATABASE_PORT || '3306', 10) === 4000 ||
+  (process.env.DATABASE_HOST && process.env.DATABASE_HOST.includes('tidbcloud.com')) ||
+  fs.existsSync(caCandidatePath)
+) {
+  if (fs.existsSync(caCandidatePath)) {
+    sslConfig = {
+      ca: fs.readFileSync(caCandidatePath),
+      minVersion: 'TLSv1.2',
+      rejectUnauthorized: true
+    };
+  } else {
+    sslConfig = {
+      minVersion: 'TLSv1.2',
+      rejectUnauthorized: true
+    };
+  }
+}
 
 const dbConfig = {
   host: process.env.DATABASE_HOST || 'localhost',
@@ -11,27 +61,34 @@ const dbConfig = {
   database: process.env.DATABASE_NAME || 'alumni_db',
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  queueLimit: 0,
+  ssl: sslConfig
 };
 
 let pool = null;
 let isConnected = false;
 
 /**
- * Initialize MySQL database connection and auto-migrations
+ * Initialize MySQL / TiDB database connection and auto-migrations
  */
 export async function initMySQLDatabase() {
   try {
-    // First connection without database to ensure database exists
-    const rootConnection = await mysql.createConnection({
-      host: dbConfig.host,
-      port: dbConfig.port,
-      user: dbConfig.user,
-      password: dbConfig.password
-    });
+    // Attempt root database existence check with SSL if enabled
+    try {
+      const rootConnection = await mysql.createConnection({
+        host: dbConfig.host,
+        port: dbConfig.port,
+        user: dbConfig.user,
+        password: dbConfig.password,
+        ssl: sslConfig
+      });
 
-    await rootConnection.query(`CREATE DATABASE IF NOT EXISTS \`${dbConfig.database}\`;`);
-    await rootConnection.end();
+      await rootConnection.query(`CREATE DATABASE IF NOT EXISTS \`${dbConfig.database}\`;`);
+      await rootConnection.end();
+    } catch (dbInitErr) {
+      // In cloud-managed databases (TiDB Cloud Serverless), database might already be provisioned
+      console.log(`ℹ️ Initial database check info: ${dbInitErr.message}`);
+    }
 
     // Create Pool for application queries
     pool = mysql.createPool(dbConfig);
@@ -41,8 +98,9 @@ export async function initMySQLDatabase() {
     console.log(`✅ MySQL connected successfully to database: ${dbConfig.database}`);
     connection.release();
 
-    // Auto-migrate users table
+    // Auto-migrate users and benefits tables
     await migrateUsersTable();
+    await migrateBenefitsTables();
     isConnected = true;
     return true;
   } catch (err) {
@@ -87,7 +145,15 @@ async function migrateUsersTable() {
     { name: 'is_email_verified', type: 'TINYINT(1) NOT NULL DEFAULT 1' },
     { name: 'is_active', type: 'TINYINT(1) NOT NULL DEFAULT 1' },
     { name: 'status', type: "VARCHAR(32) NOT NULL DEFAULT 'APPROVED'" },
-    { name: 'phone_number', type: "VARCHAR(64) NULL DEFAULT ''" }
+    { name: 'phone_number', type: "VARCHAR(64) NULL DEFAULT ''" },
+    { name: 'designation', type: "VARCHAR(255) NULL DEFAULT 'Alumni'" },
+    { name: 'organization', type: "VARCHAR(255) NULL DEFAULT ''" },
+    { name: 'department', type: "VARCHAR(255) NULL DEFAULT ''" },
+    { name: 'graduation_year', type: "INT NULL DEFAULT NULL" },
+    { name: 'location', type: "VARCHAR(255) NULL DEFAULT ''" },
+    { name: 'bio', type: "TEXT NULL" },
+    { name: 'contact_privacy', type: "VARCHAR(64) NOT NULL DEFAULT 'SHOW_ALL'" },
+    { name: 'achievements', type: "TEXT NULL" }
   ];
 
   for (const col of columnsToAdd) {
@@ -135,6 +201,63 @@ async function migrateUsersTable() {
     }
   } catch (seedErr) {
     console.warn('User seed warning:', seedErr.message);
+  }
+}
+
+/**
+ * Ensure alumni_benefits and benefit_requests tables exist
+ */
+async function migrateBenefitsTables() {
+  if (!pool) return;
+  const createBenefitsSQL = `
+    CREATE TABLE IF NOT EXISTS alumni_benefits (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      user_id VARCHAR(64) NOT NULL,
+      author_name VARCHAR(255) NOT NULL,
+      author_email VARCHAR(255) NOT NULL,
+      designation VARCHAR(255) NULL,
+      organization VARCHAR(255) NULL,
+      graduation_year INT NULL,
+      category VARCHAR(128) NOT NULL,
+      title VARCHAR(255) NOT NULL,
+      description TEXT NOT NULL,
+      skills_offered VARCHAR(550) NULL,
+      availability VARCHAR(255) NULL,
+      contact_preference VARCHAR(128) NOT NULL DEFAULT 'Email',
+      contact_details VARCHAR(255) NULL,
+      relevant_links VARCHAR(550) NULL,
+      is_financial_aid TINYINT(1) DEFAULT 0,
+      financial_amount VARCHAR(128) NULL,
+      privacy_setting VARCHAR(64) NOT NULL DEFAULT 'REGISTERED_ONLY',
+      status VARCHAR(32) NOT NULL DEFAULT 'PENDING',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      INDEX idx_benefit_category (category),
+      INDEX idx_benefit_status (status)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `;
+
+  const createRequestsSQL = `
+    CREATE TABLE IF NOT EXISTS benefit_requests (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      benefit_id INT NOT NULL,
+      user_id VARCHAR(64) NOT NULL,
+      applicant_name VARCHAR(255) NOT NULL,
+      applicant_email VARCHAR(255) NOT NULL,
+      applicant_role VARCHAR(64) NOT NULL DEFAULT 'STUDENT',
+      message TEXT NOT NULL,
+      resume_link VARCHAR(550) NULL,
+      status VARCHAR(32) NOT NULL DEFAULT 'PENDING',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT fk_benefit_req FOREIGN KEY (benefit_id) REFERENCES alumni_benefits (id) ON DELETE CASCADE
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `;
+
+  try {
+    await pool.query(createBenefitsSQL);
+    await pool.query(createRequestsSQL);
+  } catch (err) {
+    console.warn('Benefits table migration warning:', err.message);
   }
 }
 
@@ -231,6 +354,38 @@ export const mysqlDb = {
     if (updates.status !== undefined) {
       fields.push('status = ?');
       params.push(updates.status);
+    }
+    if (updates.designation !== undefined) {
+      fields.push('designation = ?');
+      params.push(updates.designation);
+    }
+    if (updates.organization !== undefined || updates.company !== undefined) {
+      fields.push('organization = ?');
+      params.push(updates.organization ?? updates.company);
+    }
+    if (updates.department !== undefined || updates.stream !== undefined) {
+      fields.push('department = ?');
+      params.push(updates.department ?? updates.stream);
+    }
+    if (updates.graduation_year !== undefined || updates.graduationYear !== undefined) {
+      fields.push('graduation_year = ?');
+      params.push(updates.graduation_year ?? updates.graduationYear);
+    }
+    if (updates.location !== undefined) {
+      fields.push('location = ?');
+      params.push(updates.location);
+    }
+    if (updates.bio !== undefined) {
+      fields.push('bio = ?');
+      params.push(updates.bio);
+    }
+    if (updates.contact_privacy !== undefined || updates.contactPrivacy !== undefined) {
+      fields.push('contact_privacy = ?');
+      params.push(updates.contact_privacy ?? updates.contactPrivacy);
+    }
+    if (updates.achievements !== undefined) {
+      fields.push('achievements = ?');
+      params.push(typeof updates.achievements === 'object' ? JSON.stringify(updates.achievements) : updates.achievements);
     }
 
     if (fields.length === 0) return this.findUserById(id);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { Send, Save, ArrowLeft, AlertCircle, CheckCircle, PenTool } from 'lucide-react';
+import { Send, Save, ArrowLeft, AlertCircle, CheckCircle, PenTool, ShieldCheck } from 'lucide-react';
 
 import { useAuth } from '../context/AuthContext';
 import { LoadingAnalyzer } from '../components/story/LoadingAnalyzer';
@@ -20,7 +20,12 @@ export const WriteStoryPage: React.FC = () => {
     profession: '',
     location: '',
     category: 'Innovation',
-    fullStory: ''
+    fullStory: '',
+    beneficiaryName: '',
+    beneficiaryBatch: '',
+    supporterName: '',
+    supporterBatch: '',
+    storyRole: 'BOTH'
   });
 
   const [loadingStory, setLoadingStory] = useState(Boolean(id));
@@ -35,8 +40,8 @@ export const WriteStoryPage: React.FC = () => {
     if (!id && user) {
       const ap = user.alumniProfile;
       const autoName = ap?.basic?.name || user.fullName || '';
-      const autoProfession = ap?.workDetails?.[0]?.position || (ap as any)?.position || (ap as any)?.work_details?.[0]?.position || '';
-      const autoLocation = ap?.contactDetails?.currentLocation?.city || (ap as any)?.location || '';
+      const autoProfession = ap?.workDetails?.[0]?.position || (ap as any)?.position || (ap as any)?.work_details?.[0]?.position || user.designation || '';
+      const autoLocation = ap?.contactDetails?.currentLocation?.city || (ap as any)?.location || user.location || '';
       
       setFormData(prev => ({
         ...prev,
@@ -68,7 +73,12 @@ export const WriteStoryPage: React.FC = () => {
               profession: story.profession || '',
               location: story.location || '',
               category: story.category || 'Innovation',
-              fullStory: story.fullStory || ''
+              fullStory: story.fullStory || '',
+              beneficiaryName: story.beneficiaryName || '',
+              beneficiaryBatch: story.beneficiaryBatch || '',
+              supporterName: story.supporterName || '',
+              supporterBatch: story.supporterBatch || '',
+              storyRole: story.storyRole || 'BOTH'
             });
           }
         })
@@ -98,7 +108,7 @@ export const WriteStoryPage: React.FC = () => {
       return;
     }
 
-    const personName = formData.personName.trim() || 'Inspiring Individual';
+    const personName = formData.personName.trim() || user?.fullName || 'Inspiring Alumnus';
     const storyTitle = formData.storyTitle.trim() || (fullStoryText.split('.')[0]?.slice(0, 60) || 'Journey Story');
 
     setError(null);
@@ -118,6 +128,11 @@ export const WriteStoryPage: React.FC = () => {
         body: JSON.stringify({
           ...formData,
           personName,
+          beneficiaryName: formData.beneficiaryName.trim(),
+          beneficiaryBatch: formData.beneficiaryBatch.trim(),
+          supporterName: formData.supporterName.trim(),
+          supporterBatch: formData.supporterBatch.trim(),
+          storyRole: formData.storyRole,
           storyTitle,
           authorMemberId: user?.alumniProfile?.id || null,
           batchYear: user?.alumniProfile?.educationDetails?.[0]?.endYear ? String(user.alumniProfile.educationDetails[0].endYear) : undefined,
@@ -139,7 +154,7 @@ export const WriteStoryPage: React.FC = () => {
           });
         }
 
-        setSuccessMsg(submitImmediate ? 'Your success story has been submitted and is waiting for institutional editorial review.' : 'Story saved as draft.');
+        setSuccessMsg(submitImmediate ? 'Your success story has been submitted for verification.' : 'Story saved as draft.');
         setTimeout(() => {
           navigate('/my-stories');
         }, 1500);
@@ -231,16 +246,21 @@ export const WriteStoryPage: React.FC = () => {
       <div className="bg-[#FFFFFF] rounded-md p-6 sm:p-8 border border-[#D9DDE1] shadow-2xs space-y-6">
         
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {/* Person Name */}
+          {/* Person Name (Optional) */}
           <div>
-            <label className="block text-xs font-bold text-[#172B3A] uppercase tracking-wider mb-1.5">
-              Alumni / Protagonist Name *
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-bold text-[#172B3A] uppercase tracking-wider">
+                Alumni / Protagonist Name <span className="text-slate-400 font-normal text-[11px] normal-case">(Optional)</span>
+              </label>
+              <span className="text-[10px] text-primary font-medium flex items-center gap-1 bg-primary-soft px-1.5 py-0.5 rounded border border-purple-200">
+                <ShieldCheck className="w-3 h-3 text-primary" />
+                Admin Managed
+              </span>
+            </div>
             <input
               type="text"
               name="personName"
-              required
-              placeholder="e.g. Dr. Jane Doe"
+              placeholder="e.g. M. Brightton (optional - leave blank to remain anonymous)"
               value={formData.personName}
               onChange={handleChange}
               className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-md text-sm text-slate-800 font-normal focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
@@ -279,6 +299,69 @@ export const WriteStoryPage: React.FC = () => {
           />
         </div>
 
+        {/* Beneficiary & Supporter */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-bold text-[#172B3A] uppercase tracking-wider">
+                Beneficiary <span className="text-slate-400 font-normal text-[11px] normal-case">(Optional)</span>
+              </label>
+              <span className="text-[10px] text-primary font-medium flex items-center gap-1 bg-primary-soft px-1.5 py-0.5 rounded border border-purple-200">
+                <ShieldCheck className="w-3 h-3 text-primary" />
+                Admin Managed
+              </span>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              <input
+                type="text"
+                name="beneficiaryName"
+                placeholder="Beneficiary name"
+                value={formData.beneficiaryName}
+                onChange={handleChange}
+                className="col-span-2 px-3.5 py-2.5 bg-white border border-slate-200 rounded-md text-sm text-slate-800 font-normal focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+              />
+              <input
+                type="text"
+                name="beneficiaryBatch"
+                placeholder="Batch (e.g. 26)"
+                value={formData.beneficiaryBatch}
+                onChange={handleChange}
+                className="col-span-1 px-3 py-2.5 bg-white border border-slate-200 rounded-md text-sm text-slate-800 font-normal focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+              />
+            </div>
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-bold text-[#172B3A] uppercase tracking-wider">
+                Supporter <span className="text-slate-400 font-normal text-[11px] normal-case">(Optional)</span>
+              </label>
+              <span className="text-[10px] text-primary font-medium flex items-center gap-1 bg-primary-soft px-1.5 py-0.5 rounded border border-purple-200">
+                <ShieldCheck className="w-3 h-3 text-primary" />
+                Admin Managed
+              </span>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              <input
+                type="text"
+                name="supporterName"
+                placeholder="Supporter name"
+                value={formData.supporterName}
+                onChange={handleChange}
+                className="col-span-2 px-3.5 py-2.5 bg-white border border-slate-200 rounded-md text-sm text-slate-800 font-normal focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+              />
+              <input
+                type="text"
+                name="supporterBatch"
+                placeholder="Batch (e.g. 24)"
+                value={formData.supporterBatch}
+                onChange={handleChange}
+                className="col-span-1 px-3 py-2.5 bg-white border border-slate-200 rounded-md text-sm text-slate-800 font-normal focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+              />
+            </div>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {/* Location */}
           <div>
@@ -288,7 +371,7 @@ export const WriteStoryPage: React.FC = () => {
             <input
               type="text"
               name="location"
-              placeholder="e.g. Bangalore, India"
+              placeholder="e.g. Kovilpatti"
               value={formData.location}
               onChange={handleChange}
               className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-md text-sm text-slate-800 font-normal focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
@@ -363,4 +446,3 @@ export const WriteStoryPage: React.FC = () => {
     </div>
   );
 };
-

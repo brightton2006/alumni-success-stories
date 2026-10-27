@@ -44,15 +44,24 @@ router.post('/', authenticateUser, async (req, res) => {
       shortSummary,
       fullStory,
       personImage,
+      beneficiaryName,
+      beneficiaryBatch,
+      supporterName,
+      supporterBatch,
+      storyRole,
       submitImmediate
     } = req.body;
 
-    if (!personName || !storyTitle || !fullStory) {
+    if (!storyTitle || !fullStory) {
       return res.status(400).json({
         success: false,
-        error: 'Person name, story title, and complete story text are required.'
+        error: 'Story title and complete narrative are required.'
       });
     }
+
+    const resolvedPersonName = (personName && personName.trim()) 
+      ? personName.trim() 
+      : (req.user?.fullName || 'Inspiring Alumnus');
 
     const status = submitImmediate ? 'PENDING_REVIEW' : 'DRAFT';
 
@@ -72,7 +81,12 @@ router.post('/', authenticateUser, async (req, res) => {
         submittedByUserEmail: req.user.email,
         authorAdminId: null,
         authorMemberId: authorMemberId || null,
-        personName: personName.trim(),
+        personName: resolvedPersonName,
+        beneficiaryName: beneficiaryName ? beneficiaryName.trim() : '',
+        beneficiaryBatch: beneficiaryBatch ? String(beneficiaryBatch).trim() : null,
+        supporterName: supporterName ? supporterName.trim() : '',
+        supporterBatch: supporterBatch ? String(supporterBatch).trim() : null,
+        storyRole: storyRole || 'GENERAL',
         storyTitle: storyTitle.trim(),
         profession: profession ? profession.trim() : 'Inspiring Individual',
         role: role || profession || 'Alumni',
@@ -170,11 +184,21 @@ router.put('/my/:id', authenticateUser, async (req, res) => {
       role,
       department,
       authorMemberId,
+      beneficiaryName,
+      beneficiaryBatch,
+      supporterName,
+      supporterBatch,
+      storyRole,
       submitImmediate
     } = req.body;
 
     const updates = {
-      personName: personName !== undefined ? personName.trim() : story.personName,
+      personName: personName !== undefined ? (personName ? personName.trim() : (req.user?.fullName || 'Inspiring Alumnus')) : story.personName,
+      beneficiaryName: beneficiaryName !== undefined ? (beneficiaryName ? beneficiaryName.trim() : '') : story.beneficiaryName,
+      beneficiaryBatch: beneficiaryBatch !== undefined ? (beneficiaryBatch ? String(beneficiaryBatch).trim() : null) : story.beneficiaryBatch,
+      supporterName: supporterName !== undefined ? (supporterName ? supporterName.trim() : '') : story.supporterName,
+      supporterBatch: supporterBatch !== undefined ? (supporterBatch ? String(supporterBatch).trim() : null) : story.supporterBatch,
+      storyRole: storyRole !== undefined ? storyRole : (story.storyRole || 'GENERAL'),
       storyTitle: storyTitle !== undefined ? storyTitle.trim() : story.storyTitle,
       profession: profession !== undefined ? profession.trim() : story.profession,
       role: role !== undefined ? role : (profession || story.role || story.profession),

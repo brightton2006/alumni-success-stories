@@ -265,14 +265,70 @@ export const AdminEditStoryPage: React.FC = () => {
             </div>
           </div>
 
+          {/* Beneficiary & Supporter Information */}
+          <div className="p-4 rounded-md bg-[#F7F8F4] border border-[#D9DDE1] space-y-3">
+            <label className="block text-xs font-bold text-[#172B3A] uppercase tracking-wider">
+              Beneficiary & Supporter (Optional)
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-medium text-slate-700 mb-1">
+                  Beneficiary
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  <input
+                    type="text"
+                    name="beneficiaryName"
+                    value={story.beneficiaryName || ''}
+                    onChange={handleFieldChange}
+                    placeholder="Beneficiary name"
+                    className="col-span-2 px-3 py-2 bg-white border border-slate-200 rounded-md text-sm text-slate-800 font-normal focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  />
+                  <input
+                    type="text"
+                    name="beneficiaryBatch"
+                    value={story.beneficiaryBatch || ''}
+                    onChange={handleFieldChange}
+                    placeholder="Batch (e.g. 26)"
+                    className="col-span-1 px-3 py-2 bg-white border border-slate-200 rounded-md text-sm text-slate-800 font-normal focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-slate-700 mb-1">
+                  Supporter
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  <input
+                    type="text"
+                    name="supporterName"
+                    value={story.supporterName || ''}
+                    onChange={handleFieldChange}
+                    placeholder="Supporter name"
+                    className="col-span-2 px-3 py-2 bg-white border border-slate-200 rounded-md text-sm text-slate-800 font-normal focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  />
+                  <input
+                    type="text"
+                    name="supporterBatch"
+                    value={story.supporterBatch || ''}
+                    onChange={handleFieldChange}
+                    placeholder="Batch (e.g. 24)"
+                    className="col-span-1 px-3 py-2 bg-white border border-slate-200 rounded-md text-sm text-slate-800 font-normal focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Admin Name Visibility & Publication Locations Control */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 p-4 rounded-md bg-[#F7F8F4] border border-[#D9DDE1]">
             {/* Name Visibility */}
             <div className="space-y-2">
               <label className="block text-xs font-bold text-[#172B3A] uppercase tracking-wider">
-                Name Attribution
+                Name Attribution & Privacy (Admin Control)
               </label>
-              <div className="flex items-center gap-4 pt-1">
+              <div className="flex flex-col gap-2 pt-1">
                 <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-[#172B3A]">
                   <input
                     type="radio"
@@ -281,7 +337,7 @@ export const AdminEditStoryPage: React.FC = () => {
                     onChange={() => setStory({ ...story, showName: true })}
                     className="w-3.5 h-3.5 text-primary focus:ring-primary"
                   />
-                  <span>Display Real Name</span>
+                  <span>Display Real Names (Protagonist, Beneficiary, Supporter)</span>
                 </label>
 
                 <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-[#172B3A]">
@@ -292,7 +348,7 @@ export const AdminEditStoryPage: React.FC = () => {
                     onChange={() => setStory({ ...story, showName: false })}
                     className="w-3.5 h-3.5 text-primary focus:ring-primary"
                   />
-                  <span>Hide Name (Batch - XX Alumni)</span>
+                  <span>Hide Names (Publish anonymously showing Batch Numbers as Batch - XX Alumni)</span>
                 </label>
               </div>
             </div>
