@@ -33,9 +33,6 @@ import { seedDatabase } from './seed.js';
 import { runMemberImport } from './scripts/importMembers.js';
 import { initMySQLDatabase } from './mysql.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 
