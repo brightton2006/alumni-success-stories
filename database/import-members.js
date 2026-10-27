@@ -1,14 +1,33 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import mysql from '../backend/node_modules/mysql2/promise.js';
-import dotenv from 'dotenv';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load environment variables
-dotenv.config({ path: path.join(__dirname, '../backend/.env') });
+// Safe module resolution
+let mysqlModule;
+try {
+  mysqlModule = await import('mysql2/promise');
+} catch {
+  mysqlModule = await import('../backend/node_modules/mysql2/promise.js');
+}
+const mysql = mysqlModule.default || mysqlModule;
+
+try {
+  let dotenvModule;
+  try {
+    dotenvModule = await import('dotenv');
+  } catch {
+    dotenvModule = await import('../backend/node_modules/dotenv/lib/main.js');
+  }
+  const dotenv = dotenvModule.default || dotenvModule;
+  const rootEnv = path.resolve(__dirname, '../.env');
+  const backendEnv = path.resolve(__dirname, '../backend/.env');
+  dotenv.config({ path: fs.existsSync(rootEnv) ? rootEnv : backendEnv });
+} catch {
+  // Environment variables are already populated from system environment
+}
 
 const DB_CONFIG = {
   host: process.env.DATABASE_HOST || process.env.DB_HOST || 'localhost',

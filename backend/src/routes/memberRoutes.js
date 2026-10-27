@@ -2,7 +2,6 @@ import express from 'express';
 import { membersDb } from '../db.js';
 import { mysqlDb } from '../mysql.js';
 import { toPublicMemberRecord } from '../models/Member.js';
-import { runMigration } from '../../../database/import-members.js';
 import { authenticateUser, requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
