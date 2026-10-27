@@ -131,6 +131,21 @@ async function runGoogleAuthTests() {
     });
     assert(deactRes.status === 403, 'Deactivated accounts blocked with 403 Forbidden status on Google login');
 
+    // TEST 11: GET /api/auth/google metadata & redirect URI resolution
+    const metaRes = await fetch(`${API_BASE}/auth/google`);
+    const metaData = await metaRes.json();
+    assert(metaRes.ok && metaData.success && metaData.redirectUri.includes('/api/auth/google/callback'), 'GET /api/auth/google returns active client config & callback URI');
+
+    // TEST 12: GET /api/auth/google/callback cancelled error handling
+    const cancelRes = await fetch(`${API_BASE}/auth/google/callback?error=access_denied`, { redirect: 'manual' });
+    const redirectLocation = cancelRes.headers.get('location') || '';
+    assert(cancelRes.status >= 300 && cancelRes.status < 400 && redirectLocation.includes('/login?error='), 'OAuth callback cancellation redirects cleanly to /login with error query');
+
+    // TEST 13: GET /api/auth/google/callback missing code handling
+    const noCodeRes = await fetch(`${API_BASE}/auth/google/callback`, { redirect: 'manual' });
+    const noCodeLocation = noCodeRes.headers.get('location') || '';
+    assert(noCodeRes.status >= 300 && noCodeRes.status < 400 && noCodeLocation.includes('/login?error='), 'OAuth callback without code safely redirects to /login with error');
+
     console.log(`\n========================================`);
     console.log(`RESULTS: ${passed} / ${total} TESTS PASSED`);
     console.log(`========================================\n`);

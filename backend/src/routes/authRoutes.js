@@ -67,48 +67,120 @@ async function formatSafeUser(u) {
   };
 }
 
+/**
+ * Helper to dynamically resolve OAuth URLs based on request host, state payload, or environment variables.
+ * Allows seamless switching between localhost dev (5000 / 5173) and production deployment (Render).
+ */
+function resolveOAuthUrls(req, stateObj = null) {
+  const host = req.get('host') || '';
+  const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
+  const protocol = req.headers['x-forwarded-proto'] || req.protocol || (req.secure ? 'https' : 'http');
+
+  // 1. Resolve callback redirect URI
+  let redirectUri = '';
+  if (stateObj?.redirectUri) {
+    redirectUri = stateObj.redirectUri;
+  } else if (req.query.redirect_uri) {
+    redirectUri = String(req.query.redirect_uri);
+  } else if (isLocal) {
+    redirectUri = `${protocol}://${host}/api/auth/google/callback`;
+  } else if (process.env.GOOGLE_CALLBACK_URL) {
+    redirectUri = process.env.GOOGLE_CALLBACK_URL;
+  } else {
+    redirectUri = `${protocol}://${host}/api/auth/google/callback`;
+  }
+
+  // 2. Resolve frontend URL
+  let frontendUrl = '';
+  if (stateObj?.frontendUrl) {
+    frontendUrl = stateObj.frontendUrl;
+  } else if (isLocal) {
+    frontendUrl = 'http://localhost:5173';
+  } else if (process.env.FRONTEND_URL) {
+    frontendUrl = process.env.FRONTEND_URL;
+  } else {
+    frontendUrl = `${protocol}://${host}`;
+  }
+
+  // Remove any trailing slashes from frontendUrl
+  frontendUrl = frontendUrl.replace(/\/+$/, '');
+
+  return { redirectUri, frontendUrl, isLocal };
+}
+
 // 1. GET /api/auth/google - Returns OAuth metadata or initiates OAuth Redirect
 router.get('/google', (req, res) => {
   const googleClientId = process.env.GOOGLE_CLIENT_ID || process.env.VITE_GOOGLE_CLIENT_ID;
-  const redirectUri = process.env.GOOGLE_CALLBACK_URL || 'http://localhost:5000/api/auth/google/callback';
+  const { redirectUri, frontendUrl, isLocal } = resolveOAuthUrls(req);
 
   if (req.query.redirect === 'true') {
     if (!googleClientId) {
       return res.status(400).json({
         success: false,
-        error: 'Google Client ID is not configured on server. Please add GOOGLE_CLIENT_ID to backend/.env file.'
+        error: 'Google Client ID is not configured on server. Please add GOOGLE_CLIENT_ID to .env file.'
       });
     }
+
+    // Embed current redirectUri and destination in state so callback receives exact match
+    const statePayload = {
+      redirectUri,
+      frontendUrl,
+      returnTo: req.query.returnTo || (req.query.redirect && req.query.redirect !== 'true' ? req.query.redirect : '')
+    };
+    const stateString = Buffer.from(JSON.stringify(statePayload)).toString('base64');
+
     const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
       `client_id=${encodeURIComponent(googleClientId)}` +
       `&redirect_uri=${encodeURIComponent(redirectUri)}` +
       `&response_type=code` +
       `&scope=${encodeURIComponent('openid email profile')}` +
       `&access_type=offline` +
+      `&state=${encodeURIComponent(stateString)}` +
       `&prompt=consent`;
+
     return res.redirect(googleAuthUrl);
   }
 
   return res.json({
     success: true,
     clientId: googleClientId || null,
-    redirectUri
+    redirectUri,
+    frontendUrl,
+    isLocal
   });
 });
 
 // 2. GET /api/auth/google/callback - Handles Google OAuth Authorization Code Callback
 router.get('/google/callback', async (req, res) => {
+  // Decode state if provided
+  let stateObj = null;
+  if (req.query.state) {
+    try {
+      stateObj = JSON.parse(Buffer.from(String(req.query.state), 'base64').toString('utf8'));
+    } catch (e) {
+      console.warn('Failed to parse OAuth state parameter:', e.message);
+    }
+  }
+
+  const { redirectUri, frontendUrl } = resolveOAuthUrls(req, stateObj);
+  const returnTo = stateObj?.returnTo || '';
+  const redirectParam = returnTo ? `&redirect=${encodeURIComponent(returnTo)}` : '';
+
   try {
-    const { code, error } = req.query;
+    const { code, error, error_description } = req.query;
 
     if (error || !code) {
-      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-      return res.redirect(`${frontendUrl}/login?error=${encodeURIComponent('Google sign-in was cancelled.')}`);
+      const errorMsg = error_description || error || 'Google sign-in was cancelled.';
+      return res.redirect(`${frontendUrl}/login?error=${encodeURIComponent(errorMsg)}`);
     }
 
     const googleClientId = process.env.GOOGLE_CLIENT_ID || process.env.VITE_GOOGLE_CLIENT_ID;
     const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
-    const redirectUri = process.env.GOOGLE_CALLBACK_URL || 'http://localhost:5000/api/auth/google/callback';
+
+    if (!googleClientId || !googleClientSecret) {
+      console.error('❌ Google OAuth Error: Missing GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET in environment variables');
+      return res.redirect(`${frontendUrl}/login?error=${encodeURIComponent('Google OAuth is not configured on server (missing GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET).')}`);
+    }
 
     // Exchange authorization code for tokens
     const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
@@ -116,51 +188,115 @@ router.get('/google/callback', async (req, res) => {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
         code: String(code),
-        client_id: googleClientId || '',
-        client_secret: googleClientSecret || '',
+        client_id: googleClientId,
+        client_secret: googleClientSecret,
         redirect_uri: redirectUri,
         grant_type: 'authorization_code'
       })
     });
 
     if (!tokenRes.ok) {
-      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-      return res.redirect(`${frontendUrl}/login?error=${encodeURIComponent('Unable to verify your Google account. Please try again.')}`);
+      const errorText = await tokenRes.text();
+      console.error('❌ Google OAuth Token Exchange Failed:', tokenRes.status, errorText);
+      let errorMsg = 'Unable to verify your Google account. Please try again.';
+      try {
+        const errObj = JSON.parse(errorText);
+        if (errObj.error === 'redirect_uri_mismatch') {
+          errorMsg = `Google OAuth Error (redirect_uri_mismatch): Redirect URI '${redirectUri}' does not match Authorized redirect URIs in Google Cloud Console.`;
+        } else if (errObj.error_description) {
+          errorMsg = `Google OAuth Error: ${errObj.error_description}`;
+        }
+      } catch (e) {}
+      return res.redirect(`${frontendUrl}/login?error=${encodeURIComponent(errorMsg)}`);
     }
 
     const tokenData = await tokenRes.json();
-    const idToken = tokenData.id_token;
+    let googleUser = null;
 
-    // Verify ID Token
-    const userinfoRes = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`);
-    if (!userinfoRes.ok) {
-      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-      return res.redirect(`${frontendUrl}/login?error=${encodeURIComponent('Unable to verify your Google account. Please try again.')}`);
+    // 1. Try to verify ID Token with google-auth-library
+    if (tokenData.id_token) {
+      try {
+        const { OAuth2Client } = await import('google-auth-library');
+        const client = new OAuth2Client(googleClientId);
+        const ticket = await client.verifyIdToken({
+          idToken: tokenData.id_token,
+          audience: googleClientId
+        });
+        const payload = ticket.getPayload();
+        if (payload && payload.email) {
+          googleUser = {
+            sub: payload.sub,
+            email: payload.email,
+            name: payload.name || payload.given_name || payload.email.split('@')[0],
+            picture: payload.picture,
+            email_verified: payload.email_verified === 'true' || payload.email_verified === true
+          };
+        }
+      } catch (idErr) {
+        console.warn('ID token verification via library failed, trying tokeninfo endpoint:', idErr.message);
+      }
     }
 
-    const payload = await userinfoRes.json();
-    const googleUser = {
-      sub: payload.sub,
-      email: payload.email,
-      name: payload.name || payload.given_name || payload.email.split('@')[0],
-      picture: payload.picture,
-      email_verified: payload.email_verified === 'true' || payload.email_verified === true
-    };
+    // 2. Fallback to tokeninfo endpoint if verifyIdToken failed or wasn't available
+    if (!googleUser && tokenData.id_token) {
+      try {
+        const tokeninfoRes = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${tokenData.id_token}`);
+        if (tokeninfoRes.ok) {
+          const payload = await tokeninfoRes.json();
+          if (payload && payload.email) {
+            googleUser = {
+              sub: payload.sub,
+              email: payload.email,
+              name: payload.name || payload.given_name || payload.email.split('@')[0],
+              picture: payload.picture,
+              email_verified: payload.email_verified === 'true' || payload.email_verified === true
+            };
+          }
+        }
+      } catch (tErr) {
+        console.warn('Tokeninfo fallback failed:', tErr.message);
+      }
+    }
+
+    // 3. Fallback to Google userinfo endpoint using access_token
+    if (!googleUser && tokenData.access_token) {
+      try {
+        const userinfoRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: `Bearer ${tokenData.access_token}` }
+        });
+        if (userinfoRes.ok) {
+          const payload = await userinfoRes.json();
+          if (payload && payload.email) {
+            googleUser = {
+              sub: payload.sub,
+              email: payload.email,
+              name: payload.name || payload.given_name || payload.email.split('@')[0],
+              picture: payload.picture,
+              email_verified: payload.email_verified === 'true' || payload.email_verified === true
+            };
+          }
+        }
+      } catch (uErr) {
+        console.warn('Userinfo endpoint fallback failed:', uErr.message);
+      }
+    }
+
+    if (!googleUser || !googleUser.email) {
+      console.error('❌ Failed to retrieve user profile from Google tokens:', tokenData);
+      return res.redirect(`${frontendUrl}/login?error=${encodeURIComponent('Failed to retrieve user profile from Google. Please try again.')}`);
+    }
 
     const authResult = await processGoogleUserAuthentication(googleUser);
 
     if (!authResult.success) {
-      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
       return res.redirect(`${frontendUrl}/login?error=${encodeURIComponent(authResult.error)}`);
     }
 
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-    return res.redirect(`${frontendUrl}/login?token=${authResult.token}&user=${encodeURIComponent(JSON.stringify(authResult.user))}`);
+    return res.redirect(`${frontendUrl}/login?token=${authResult.token}&user=${encodeURIComponent(JSON.stringify(authResult.user))}${redirectParam}`);
 
   } catch (err) {
     console.error('Google Callback OAuth Error:', err);
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-    return res.redirect(`${frontendUrl}/login?error=${encodeURIComponent('Something went wrong. Please try again later.')}`);
+    return res.redirect(`${frontendUrl}/login?error=${encodeURIComponent('Something went wrong during Google sign-in. Please try again.')}`);
   }
 });
 

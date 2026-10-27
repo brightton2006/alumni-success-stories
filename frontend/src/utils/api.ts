@@ -278,7 +278,13 @@ Her impact extends beyond sport: she launched the RunHer Foundation, providing a
   }
 ];
 
-const customApiUrl = (import.meta as any).env?.VITE_API_URL || '';
+// Resolve backend API URL: prioritize VITE_API_URL, auto-detect Render production host, fallback to local dev
+const envApiUrl = ((import.meta as any).env?.VITE_API_URL || '').trim();
+const detectedProductionUrl = typeof window !== 'undefined' && window.location.hostname.includes('onrender.com')
+  ? 'https://alumni-success-stories-backend.onrender.com'
+  : '';
+const customApiUrl = (envApiUrl || detectedProductionUrl).replace(/\/+$/, '');
+
 export const API_HOSTS = [customApiUrl, '', 'http://localhost:5000', 'http://127.0.0.1:5000'].filter((h, i, arr) => h !== undefined && arr.indexOf(h) === i);
 
 export async function fetchJsonSafely(path: string, options: RequestInit = {}): Promise<{ ok: boolean; data: any; status: number }> {

@@ -228,6 +228,22 @@ app.get('/api/user-by-email', async (req, res) => {
   }
 });
 
+// Root API Status Endpoint
+app.get('/', (req, res) => {
+  res.json({
+    status: 'ok',
+    app: 'Success Story API Server',
+    message: 'Backend server is running smoothly.',
+    healthCheck: '/api/health',
+    endpoints: {
+      health: '/api/health',
+      stories: '/api/stories',
+      categories: '/api/categories',
+      members: '/api/members'
+    }
+  });
+});
+
 // Health Check API
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', app: 'Success Story API', time: new Date().toISOString() });
@@ -260,6 +276,14 @@ app.listen(PORT, '0.0.0.0', async () => {
   console.log(`🚀 Success Story Backend Server running on http://0.0.0.0:${PORT} (listening on all interfaces)`);
   await initMySQLDatabase();
   await seedDatabase();
-  await runMemberImport();
+
+  const datasetCandidates = [
+    'D:/alumni DB/test.members.json',
+    path.join(__dirname, '../data/test.members.json'),
+    path.join(__dirname, '../../test.members.json')
+  ];
+  if (datasetCandidates.some(p => fs.existsSync(p))) {
+    await runMemberImport();
+  }
 });
 

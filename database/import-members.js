@@ -29,6 +29,24 @@ try {
   // Environment variables are already populated from system environment
 }
 
+let sslConfig = undefined;
+const caCandidatePath = path.resolve(__dirname, '../backend/certs/ca.pem');
+if (
+  process.env.DATABASE_SSL === 'true' ||
+  parseInt(process.env.DATABASE_PORT || '3306', 10) === 4000 ||
+  (process.env.DATABASE_HOST && process.env.DATABASE_HOST.includes('tidbcloud.com')) ||
+  fs.existsSync(caCandidatePath)
+) {
+  sslConfig = fs.existsSync(caCandidatePath) ? {
+    ca: fs.readFileSync(caCandidatePath),
+    minVersion: 'TLSv1.2',
+    rejectUnauthorized: true
+  } : {
+    minVersion: 'TLSv1.2',
+    rejectUnauthorized: true
+  };
+}
+
 const DB_CONFIG = {
   host: process.env.DATABASE_HOST || process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DATABASE_PORT || process.env.DB_PORT || '3306', 10),
@@ -36,7 +54,8 @@ const DB_CONFIG = {
   password: process.env.DATABASE_PASSWORD !== undefined ? process.env.DATABASE_PASSWORD 
 : (process.env.DB_PASSWORD || ''),
   database: process.env.DATABASE_NAME || process.env.DB_NAME || 'alumni_db',
-  multipleStatements: true
+  multipleStatements: true,
+  ssl: sslConfig
 };
 
 // Helper: Convert Mongo $oid or string
@@ -77,16 +96,20 @@ export async function runMigration() {
   // 1. Establish connection to MySQL
   let conn;
   try {
-    // First connect without specifying database to ensure alumni_db database exists
-    const rootConn = await mysql.createConnection({
-      host: DB_CONFIG.host,
-      port: DB_CONFIG.port,
-      user: DB_CONFIG.user,
-      password: DB_CONFIG.password,
-      multipleStatements: true
-    });
-    await rootConn.query(`CREATE DATABASE IF NOT EXISTS \`${DB_CONFIG.database}\` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
-    await rootConn.end();
+    try {
+      const rootConn = await mysql.createConnection({
+        host: DB_CONFIG.host,
+        port: DB_CONFIG.port,
+        user: DB_CONFIG.user,
+        password: DB_CONFIG.password,
+        ssl: sslConfig,
+        multipleStatements: true
+      });
+      await rootConn.query(`CREATE DATABASE IF NOT EXISTS \`${DB_CONFIG.database}\` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
+      await rootConn.end();
+    } catch (dbInitErr) {
+      // In cloud databases like TiDB Cloud, database is already provisioned
+    }
 
     conn = await mysql.createConnection(DB_CONFIG);
     console.log(`✅ Connected to MySQL database "${DB_CONFIG.database}" on ${DB_CONFIG.host}:${DB_CONFIG.port}`);

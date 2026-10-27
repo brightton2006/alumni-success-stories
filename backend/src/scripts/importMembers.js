@@ -8,10 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export async function runMemberImport() {
-  console.log('🚀 Starting member dataset import process...');
   const startTime = Date.now();
-
-  await initMongoConnection();
 
   // Find source file path
   let sourcePath = 'D:/alumni DB/test.members.json';
@@ -23,12 +20,16 @@ export async function runMemberImport() {
   }
 
   if (!fs.existsSync(sourcePath)) {
-    console.error(`❌ Member JSON file not found at ${sourcePath}`);
+    console.log(`ℹ️ Member JSON file not found at ${sourcePath}. Skipping automatic member import.`);
     return {
-      success: false,
-      error: `Member JSON file not found at ${sourcePath}`
+      success: true,
+      skipped: true,
+      message: `Member JSON file not found at ${sourcePath}. Skipping import.`
     };
   }
+
+  console.log('🚀 Starting member dataset import process...');
+  await initMongoConnection();
 
   console.log(`📁 Reading member dataset from: ${sourcePath}`);
   const fileContent = fs.readFileSync(sourcePath, 'utf8');

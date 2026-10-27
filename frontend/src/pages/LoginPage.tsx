@@ -129,45 +129,53 @@ export const LoginPage: React.FC = () => {
 
   const triggerOAuthPopup = (clientId: string) => {
     if (!window.google?.accounts?.oauth2) {
-      setError('Google Identity Services is initializing. Please try again.');
-      setGoogleSubmitting(false);
+      // Direct full-page OAuth redirect fallback
+      window.location.href = '/api/auth/google?redirect=true';
       return;
     }
 
-    const client = window.google.accounts.oauth2.initTokenClient({
-      client_id: clientId,
-      scope: 'email profile openid',
-      callback: async (tokenResponse: any) => {
-        if (tokenResponse.error) {
-          if (tokenResponse.error === 'popup_closed_by_user') {
-            setError('Google sign-in was cancelled.');
-          } else {
-            setError('Unable to sign in with Google OAuth. Please try again.');
+    try {
+      const client = window.google.accounts.oauth2.initTokenClient({
+        client_id: clientId,
+        scope: 'email profile openid',
+        callback: async (tokenResponse: any) => {
+          if (tokenResponse.error) {
+            if (tokenResponse.error === 'popup_closed_by_user') {
+              setError('Google sign-in was cancelled.');
+            } else {
+              setError('Unable to sign in with Google OAuth popup. Trying standard Google sign-in...');
+              setTimeout(() => {
+                window.location.href = '/api/auth/google?redirect=true';
+              }, 800);
+            }
+            setGoogleSubmitting(false);
+            return;
           }
-          setGoogleSubmitting(false);
-          return;
-        }
 
-        try {
-          const res = await fetchJsonSafely('/api/auth/google', {
-            method: 'POST',
-            body: JSON.stringify({ accessToken: tokenResponse.access_token })
-          });
+          try {
+            const res = await fetchJsonSafely('/api/auth/google', {
+              method: 'POST',
+              body: JSON.stringify({ accessToken: tokenResponse.access_token })
+            });
 
-          if (res.ok && res.data?.token && res.data?.user) {
-            login(res.data.token, res.data.user);
-            redirectAfterLogin(res.data.user.role);
-          } else {
-            setError(res.data?.error || 'Unable to sign in with Google OAuth. Please try again.');
+            if (res.ok && res.data?.token && res.data?.user) {
+              login(res.data.token, res.data.user);
+              redirectAfterLogin(res.data.user.role);
+            } else {
+              setError(res.data?.error || 'Unable to sign in with Google OAuth. Please try again.');
+            }
+          } catch (err) {
+            setError('Network error. Please check your connection and try again.');
+          } finally {
+            setGoogleSubmitting(false);
           }
-        } catch (err) {
-          setError('Network error. Please check your connection and try again.');
-        } finally {
-          setGoogleSubmitting(false);
         }
-      }
-    });
-    client.requestAccessToken();
+      });
+      client.requestAccessToken();
+    } catch (popupErr) {
+      console.warn('Google popup client initialization error, falling back to redirect flow:', popupErr);
+      window.location.href = '/api/auth/google?redirect=true';
+    }
   };
 
   const handleGoogleLogin = async () => {
@@ -487,33 +495,56 @@ export const LoginPage: React.FC = () => {
 
             {/* TAB 1: Google OAuth 2.0 Client ID */}
             {googleModalTab === 'oauth' && (
-              <form onSubmit={handleCustomClientIdSubmit} className="space-y-3">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-900 mb-1">
-                    Google OAuth Client ID
-                  </label>
-                  <div className="relative">
-                    <Key className="w-4 h-4 text-primary absolute left-3 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="text"
-                      required
-                      placeholder="123456789-abc.apps.googleusercontent.com"
-                      value={customClientIdInput}
-                      onChange={(e) => setCustomClientIdInput(e.target.value)}
-                      className="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-md text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                    />
+              <div className="space-y-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setGoogleSubmitting(true);
+                    window.location.href = '/api/auth/google?redirect=true';
+                  }}
+                  className="w-full py-2.5 bg-primary hover:bg-primary-hover text-white font-semibold text-xs rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+                >
+                  <span>Sign In via Official Google OAuth (Redirect)</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+
+                <div className="relative my-2 flex items-center justify-center">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-slate-200" />
+                  </div>
+                  <div className="relative bg-white px-2 text-[10px] font-bold text-slate-400 uppercase">
+                    OR CUSTOM CLIENT ID
                   </div>
                 </div>
 
-                <button
-                  type="submit"
-                  disabled={googleSubmitting}
-                  className="w-full py-2 bg-primary hover:bg-primary-hover text-white font-semibold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-60 shadow-2xs"
-                >
-                  <span>{googleSubmitting ? 'Opening...' : 'Connect with Google OAuth'}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </form>
+                <form onSubmit={handleCustomClientIdSubmit} className="space-y-3">
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-900 mb-1">
+                      Custom Google OAuth Client ID
+                    </label>
+                    <div className="relative">
+                      <Key className="w-4 h-4 text-primary absolute left-3 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="text"
+                        required
+                        placeholder="123456789-abc.apps.googleusercontent.com"
+                        value={customClientIdInput}
+                        onChange={(e) => setCustomClientIdInput(e.target.value)}
+                        className="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-md text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={googleSubmitting}
+                    className="w-full py-2 bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-60 shadow-2xs"
+                  >
+                    <span>{googleSubmitting ? 'Opening...' : 'Connect with Custom Client ID'}</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </form>
+              </div>
             )}
 
             {/* TAB 2: Google Email Login */}
