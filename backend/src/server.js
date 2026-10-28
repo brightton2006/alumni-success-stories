@@ -18,7 +18,7 @@ if (fs.existsSync(rootEnvPath)) {
   dotenv.config({ path: localEnvPath });
 }
 
-import authRoutes from './routes/authRoutes.js';
+import authRoutes, { ssoCallbackHandler } from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import publicStoryRoutes from './routes/publicStoryRoutes.js';
 import userStoryRoutes from './routes/userStoryRoutes.js';
@@ -100,6 +100,7 @@ import { mysqlDb } from './mysql.js';
 
 // API Routes Setup
 app.use('/api/auth', authRoutes);
+app.get('/api/stories/sso', ssoCallbackHandler);
 app.use('/api/users', userRoutes);
 app.use('/api/stories', userStoryRoutes);
 app.use('/api/stories', publicStoryRoutes);

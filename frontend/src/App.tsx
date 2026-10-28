@@ -99,6 +99,9 @@ export function App() {
                   <Route path="/stories/:id" element={<StoryDetailPage />} />
                   <Route path="/story/:id" element={<StoryDetailPage />} />
                   <Route path="/login" element={<LoginPage />} />
+                  <Route path="/sso" element={<LoginPage />} />
+                  <Route path="/sso/callback" element={<LoginPage />} />
+                  <Route path="/api/stories/sso" element={<LoginPage />} />
                   <Route path="/register" element={<RegisterPage />} />
 
                   

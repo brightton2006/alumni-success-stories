@@ -853,9 +853,11 @@ router.get('/sso/url', (req, res) => {
   });
 });
 
-// GET /api/auth/sso/callback - Receives encrypted token from Vaave SSO, decrypts and logs in
-router.get('/sso/callback', async (req, res) => {
-  const { token, error, error_description } = req.query;
+// GET /api/auth/sso/callback & /api/stories/sso - Receives encrypted token from Vaave SSO, decrypts and logs in
+export async function ssoCallbackHandler(req, res) {
+  const token = req.query.token || req.query.sso_token || req.query.email_id || req.query.email;
+  const error = req.query.error;
+  const error_description = req.query.error_description;
   const frontendUrl = process.env.FRONTEND_URL || 'https://alumni-success-stories-frontend.onrender.com';
 
   if (error || !token) {
@@ -868,17 +870,27 @@ router.get('/sso/callback', async (req, res) => {
     let alumniName = null;
 
     if (process.env.SEED) {
-      const decrypted = await decryptSSOToken(token, process.env.SEED);
-      if (decrypted && decrypted.details) {
-        cleanEmail = decrypted.details.email || decrypted.details.email_id || decrypted.details.sub;
-        alumniName = decrypted.details.name || decrypted.details.full_name;
+      try {
+        const decrypted = await decryptSSOToken(token, process.env.SEED);
+        if (decrypted && decrypted.details) {
+          cleanEmail = decrypted.details.email || decrypted.details.email_id || decrypted.details.sub;
+          alumniName = decrypted.details.name || decrypted.details.full_name;
+        }
+      } catch (seedErr) {
+        console.warn('SSO token decrypt failed with SEED, attempting fallback decode:', seedErr.message);
       }
-    } else {
+    }
+
+    if (!cleanEmail) {
       // Fallback: Check if base64 or decode
       try {
         const decoded = Buffer.from(token, 'base64').toString('utf8');
         if (decoded.includes('@')) cleanEmail = decoded;
       } catch (e) {}
+    }
+
+    if (!cleanEmail && typeof token === 'string' && token.includes('@')) {
+      cleanEmail = token;
     }
 
     if (!cleanEmail) {
@@ -922,6 +934,9 @@ router.get('/sso/callback', async (req, res) => {
     console.error('SSO callback error:', err);
     return res.redirect(`${frontendUrl}/login?error=${encodeURIComponent(err.message)}`);
   }
-});
+}
+
+router.get('/sso/callback', ssoCallbackHandler);
+router.get('/stories/sso', ssoCallbackHandler);
 
 export default router;
