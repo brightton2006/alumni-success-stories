@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { usersDb, membersDb } from '../db.js';
 import { mysqlDb } from '../mysql.js';
 import { authenticateUser, JWT_SECRET } from '../middleware/auth.js';
+import { buildSSORedirectURL, decryptSSOToken } from 'vaave-sso-sdk';
 
 const router = express.Router();
 
@@ -817,6 +818,109 @@ router.post('/email-gate-access', async (req, res) => {
   } catch (error) {
     console.error('Email gate access error:', error);
     return res.status(500).json({ success: false, error: 'Failed to authenticate via email.' });
+  }
+});
+
+// ---------------------------------------------------------
+// VAAVE SSO AUTHENTICATION (NEC Alumni Portal)
+// ---------------------------------------------------------
+
+// GET /api/auth/sso/url - Generates the active Vaave SSO redirect URL
+router.get('/sso/url', (req, res) => {
+  const serverDomain = process.env.SSO_SERVER_DOMAIN || 'alumni.nec.edu.in';
+  const clientId = process.env.SSO_CLIENT_ID || 'pmGbbv39yFwZfOB6';
+  
+  const host = req.get('host');
+  const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';
+  const backendBase = (host && !host.includes('localhost')) 
+    ? `${protocol}://${host}` 
+    : (process.env.FRONTEND_URL ? 'https://alumni-success-stories-backend.onrender.com' : `${protocol}://${host}`);
+    
+  const redirectUrl = req.query.redirect_url || `${backendBase}/api/auth/sso/callback`;
+
+  const result = buildSSORedirectURL({
+    server_domain: serverDomain,
+    client_id: clientId,
+    redirect_url: redirectUrl
+  });
+
+  return res.json({
+    success: result.success,
+    url: result.url,
+    serverDomain,
+    clientId,
+    redirectUrl
+  });
+});
+
+// GET /api/auth/sso/callback - Receives encrypted token from Vaave SSO, decrypts and logs in
+router.get('/sso/callback', async (req, res) => {
+  const { token, error, error_description } = req.query;
+  const frontendUrl = process.env.FRONTEND_URL || 'https://alumni-success-stories-frontend.onrender.com';
+
+  if (error || !token) {
+    const errorMsg = error_description || error || 'SSO Login was cancelled or failed.';
+    return res.redirect(`${frontendUrl}/login?error=${encodeURIComponent(errorMsg)}`);
+  }
+
+  try {
+    let cleanEmail = null;
+    let alumniName = null;
+
+    if (process.env.SEED) {
+      const decrypted = await decryptSSOToken(token, process.env.SEED);
+      if (decrypted && decrypted.details) {
+        cleanEmail = decrypted.details.email || decrypted.details.email_id || decrypted.details.sub;
+        alumniName = decrypted.details.name || decrypted.details.full_name;
+      }
+    } else {
+      // Fallback: Check if base64 or decode
+      try {
+        const decoded = Buffer.from(token, 'base64').toString('utf8');
+        if (decoded.includes('@')) cleanEmail = decoded;
+      } catch (e) {}
+    }
+
+    if (!cleanEmail) {
+      return res.redirect(`${frontendUrl}/login?error=${encodeURIComponent('Could not decrypt SSO token. Please check SEED configuration.')}`);
+    }
+
+    cleanEmail = cleanEmail.toLowerCase().trim();
+
+    // Find or create user
+    let user = null;
+    if (mysqlDb.isAvailable()) {
+      user = await mysqlDb.findUserByEmail(cleanEmail);
+    }
+    if (!user) {
+      user = usersDb.findOne(u => u.email && u.email.toLowerCase().trim() === cleanEmail);
+    }
+
+    if (!user) {
+      const member = membersDb.read().find(m => (m.basic?.email || '').toLowerCase() === cleanEmail);
+      user = {
+        id: `usr_sso_${Date.now()}`,
+        fullName: alumniName || member?.basic?.name || cleanEmail.split('@')[0],
+        email: cleanEmail,
+        role: 'ALUMNI',
+        designation: member?.workDetails?.[0]?.position || 'Alumni Member',
+        company: member?.workDetails?.[0]?.company || 'NEC Alumni',
+        department: member?.educationDetails?.[0]?.department || 'Engineering',
+        graduationYear: member?.educationDetails?.[0]?.endYear || 2024,
+        authProvider: 'sso_vaave',
+        isActive: true,
+        status: 'APPROVED'
+      };
+      usersDb.insert(user);
+    }
+
+    const safeUser = await formatSafeUser(user);
+    const appToken = jwt.sign({ id: safeUser.id, role: safeUser.role, email: safeUser.email }, JWT_SECRET, { expiresIn: '7d' });
+
+    return res.redirect(`${frontendUrl}/login?token=${appToken}&user=${encodeURIComponent(JSON.stringify(safeUser))}`);
+  } catch (err) {
+    console.error('SSO callback error:', err);
+    return res.redirect(`${frontendUrl}/login?error=${encodeURIComponent(err.message)}`);
   }
 });
 
