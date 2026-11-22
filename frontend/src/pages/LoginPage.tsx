@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Mail, Lock, AlertCircle, ArrowRight, ShieldCheck, X, Key, Users, GraduationCap } from 'lucide-react';
+import { Mail, Lock, AlertCircle, ArrowRight, ShieldCheck, X, Key, Users } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { fetchJsonSafely } from '../utils/api';
 import { Logo } from '../components/common/Logo';
@@ -319,49 +319,9 @@ export const LoginPage: React.FC = () => {
           </div>
         )}
 
-        {/* SSO Progress Notification */}
-        {submitting && (searchParams.get('token') || searchParams.get('sso_token') || searchParams.get('email')) && (
-          <div className="mb-5 p-3 rounded-md bg-purple-50 border border-purple-200 text-primary text-xs font-semibold flex items-center gap-2.5 animate-pulse">
-            <GraduationCap className="w-4 h-4 shrink-0 text-primary" />
-            <span>Verifying NEC Alumni Portal Single Sign-On session...</span>
-          </div>
-        )}
 
-        {/* Official NEC Alumni Portal SSO Link */}
-        <div className="mb-5">
-          <a
-            href="https://alumni.nec.edu.in/sso/auth/pmGbbv39yFwZfOB6/aHR0cHM6Ly9uZWNhbHVtbmkubmVjLmVkdS5pbi9hcGkvc3Rvcmllcy9zc28="
-            className="w-full py-3 px-3.5 bg-gradient-to-r from-purple-900 via-primary to-purple-800 hover:from-purple-950 hover:to-primary text-white font-semibold text-xs tracking-wide rounded-xl shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-between group border border-purple-700/30"
-          >
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center text-amber-300 border border-white/20 shrink-0">
-                <GraduationCap className="w-4 h-4" />
-              </div>
-              <div className="text-left">
-                <div className="font-bold text-xs text-white flex items-center gap-1.5">
-                  <span>Sign in with NEC Alumni Portal</span>
-                  <span className="text-[9px] bg-amber-400 text-slate-900 font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">
-                    SSO
-                  </span>
-                </div>
-                <div className="text-[10px] text-purple-200 font-normal">
-                  Login directly via alumni.nec.edu.in
-                </div>
-              </div>
-            </div>
-            <ArrowRight className="w-4 h-4 text-purple-200 group-hover:translate-x-0.5 transition-transform shrink-0" />
-          </a>
-        </div>
 
-        {/* Divider */}
-        <div className="relative my-4 flex items-center justify-center">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-200" />
-          </div>
-          <div className="relative bg-white px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-            OR LOGIN WITH EMAIL
-          </div>
-        </div>
+
 
         {/* Login Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
